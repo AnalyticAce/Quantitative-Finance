@@ -5,6 +5,25 @@ from datetime import datetime, timedelta
 from termcolor import colored
 import time 
 
+
+class TextColors:
+    RESET = "\033[0m"
+    GREEN = "\033[32m"
+    RED = "\033[31m"
+    YELLOW = "\033[33m"
+    BLINK = "\033[5m"
+
+def print_status(message, color=TextColors.RESET):
+    print(f"{color}{message}{TextColors.RESET}")
+
+def print_ascii_art():
+    try:
+        with open("Source/ascii.txt", "r") as file:
+            ascii_art = file.read()
+            print(f"{TextColors.BLINK}{TextColors.GREEN}{ascii_art}{TextColors.RESET}")
+    except FileNotFoundError:
+        print_status("ASCII art file not found.", TextColors.RED)
+
 def get_historical_data(symbol, timeframe, number_of_data = 1000):
     # Initialize the MetaTrader 5 terminal
     if not mt5.initialize():
@@ -84,13 +103,13 @@ def execute_sell_trade(df, symbol, lot_size=0.2, initial_balance=10):
             roi_color = "🔴" if roi_percentage < 0 else "🟢"
             # Print trade execution details in a stylized manner
             print(colored("===== Trade Executed 🚀 =====", "green"))
-            print(colored(f"=====  SELL {symbol} 📈 =====", "red"))
-            print(colored(f"Date/Time: {datetime.now()} ⏰", "yellow"))
+            print(colored(f"=====  SELL {symbol} 📈 =====", "red", attrs=["blink", "underline"]))
+            print(colored(f"Date/Time: {datetime.now()} ⏰", "yellow", attrs=["blink", "underline"]))
             print(colored(f"Symbol: {symbol} 💱", "yellow"))
             print(colored(f"Price: {result.price}  💵", "yellow"))
             print(colored(f"Current Account Balance: ${current_balance} 💰", "yellow"))
-            print(f"ROI since Initial Capital: {roi_color} {roi_percentage:.2f}%")
-            print(colored("===========================", "green"))
+            print(f"ROI since Initial Capital: {roi_color} {roi_percentage:.2f}%", "red" if roi_percentage < 0 else "green")
+            print(colored("=============================", "green"))
 
         else:
             print(colored("Failed to execute trade. 🆘", "red"))
@@ -133,7 +152,7 @@ def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period =
         # Wait for some time before checking for opportunities again
         # Adjust the sleep duration as per your preference (in seconds)
         sleep_duration = 60  # Wait for 1 minute
-        print(colored(f"Waiting for {sleep_duration} seconds before checking again...🧘‍♀️ 🧘 🧘‍♂️"), "red")
+        print(colored(f"Waiting for {sleep_duration} seconds before checking again...🧘🧘🧘"), "red")
         time.sleep(sleep_duration)
 
 # Example usage:
@@ -143,5 +162,5 @@ if __name__ == "__main__":
     lot_size = 0.2  # Replace with your desired lot size
     data_length = 1000  # Replace with the number of data points to retrieve
     period = 14  # Replace with the RSI period
-
+    print_ascii_art()
     run_strategy(symbol, timeframe, lot_size, data_length, period)
