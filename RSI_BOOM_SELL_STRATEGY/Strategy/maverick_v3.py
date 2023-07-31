@@ -2,12 +2,13 @@ import MetaTrader5 as mt5
 import pandas as pd
 import ta.momentum as momentum
 from datetime import datetime, timedelta
+from termcolor import colored
 import time 
 
 def get_historical_data(symbol, timeframe, number_of_data = 1000):
     # Initialize the MetaTrader 5 terminal
     if not mt5.initialize():
-        print("initialize() failed")
+        print(colored("initialize() failed ☢️", "red"))
         mt5.shutdown()
         return None
 
@@ -16,7 +17,7 @@ def get_historical_data(symbol, timeframe, number_of_data = 1000):
 
     # Check if data is retrieved successfully
     if rates is None:
-        print("Failed to retrieve historical data.")
+        print(colored("Failed to retrieve historical data. ☢️", "red"))
         mt5.shutdown()
         return None
 
@@ -36,21 +37,21 @@ def calculate_rsi(df, period = 14):
         rsi_indicator = momentum.RSIIndicator(df["close"], window = period)
         df["rsi"] = rsi_indicator.rsi()
     except Exception as e:
-        print("Error calculating RSI:", str(e))
+        print(colored("Error calculating RSI:" + str(e), + "☣️" "red"))
 
-def execute_sell_trade(df, symbol, lot_size = 0.2):
+def execute_sell_trade(df, symbol, lot_size=0.2, initial_balance=10):
     # Get the last row (most recent bar) from the historical data
     current_bar = df.iloc[-1]
     previous_bar = df.iloc[-2]
-    
-    # Check if RSI is greater than 70 (overbought) and the current close 
+
+    # Check if RSI is greater than 70 (overbought) and the current close
     # is lower than the open of the current bar, and the previous close
     # was higher than the open of the previous bar
     if current_bar["rsi"] > 70 and current_bar["close"] < current_bar["open"] \
-    and previous_bar["close"] > previous_bar["open"]:
+            and previous_bar["close"] > previous_bar["open"]:
         # Initialize the MetaTrader 5 terminal
         if not mt5.initialize():
-            print("initialize() failed")
+            print(colored("initialize() failed ☢️", "red"))
             mt5.shutdown()
             return
 
@@ -68,10 +69,32 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
             "type_time": mt5.ORDER_TIME_GTC
         }
         result = mt5.order_send(request)
-        print("Sell Trade Executed:", result.comment)
 
         # Shutdown the MetaTrader 5 terminal
         mt5.shutdown()
+
+        if result.comment == "Accepted":
+            # Get the current account balance
+            account_info = mt5.account_info()
+            current_balance = account_info.balance
+            
+            # Calculate return on investment (ROI) percentage
+            roi_percentage = ((current_balance - initial_balance) / initial_balance) * 100
+
+            roi_color = "🔴" if roi_percentage < 0 else "🟢"
+            # Print trade execution details in a stylized manner
+            print(colored("===== Trade Executed 🚀 =====", "green"))
+            print(colored(f"=====  SELL {symbol} 📈 =====", "red"))
+            print(colored(f"Date/Time: {datetime.now()} ⏰", "yellow"))
+            print(colored(f"Symbol: {symbol} 💱", "yellow"))
+            print(colored(f"Price: {result.price}  💵", "yellow"))
+            print(colored(f"Current Account Balance: ${current_balance} 💰", "yellow"))
+            print(f"ROI since Initial Capital: {roi_color} {roi_percentage:.2f}%")
+            print(colored("===========================", "green"))
+
+        else:
+            print(colored("Failed to execute trade. 🆘", "red"))
+
 
 def find_filling_mode(symbol):
     for i in range(2):
@@ -86,10 +109,11 @@ def find_filling_mode(symbol):
         }
         result = mt5.order_check(request)
         if result.comment == "Done":
+            print(colored("===== Trade Closed ❌ =====", "red"))
             break
     return i
 
-def run_strategy(symbol, timeframe, lot_size=0.1, data_length = 1000, period = 14):
+def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period = 14):
     while True:
         try:
             # Retrieve historical data
@@ -104,12 +128,12 @@ def run_strategy(symbol, timeframe, lot_size=0.1, data_length = 1000, period = 1
                 execute_sell_trade(df, symbol, lot_size)
 
         except Exception as e:
-            print("Error executing the strategy:", str(e))
+            print(colored("Error executing the strategy: " + str(e), + "☣️" "red"))
 
         # Wait for some time before checking for opportunities again
         # Adjust the sleep duration as per your preference (in seconds)
         sleep_duration = 60  # Wait for 1 minute
-        print(f"Waiting for {sleep_duration} seconds before checking again...")
+        print(colored(f"Waiting for {sleep_duration} seconds before checking again...🧘‍♀️ 🧘 🧘‍♂️"), "red")
         time.sleep(sleep_duration)
 
 # Example usage:

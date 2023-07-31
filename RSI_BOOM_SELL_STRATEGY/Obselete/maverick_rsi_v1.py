@@ -3,7 +3,6 @@ import os
 import pandas as pd
 import time
 import ta
-from secret import credentials
 
 class TextColors:
     RESET = "\033[0m"
