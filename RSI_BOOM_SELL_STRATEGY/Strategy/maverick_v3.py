@@ -150,3 +150,4 @@ if __name__ == "__main__":
     
     printer.print_ascii_art()
     run_strategy(symbol, timeframe, lot_size, data_length, period)
+    

@@ -12,6 +12,7 @@ class TextColors:
 def print_status(message, color = TextColors.RESET):
     print(f"{color}{message}{TextColors.RESET}")
 
+
 class printer:
     def print_ascii_art():
         try:
