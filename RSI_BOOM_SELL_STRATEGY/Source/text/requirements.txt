@@ -3,3 +3,4 @@ pandas==1.3.3
 ta==0.7.0
 termcolor==1.1.0
 playsound
+telebot

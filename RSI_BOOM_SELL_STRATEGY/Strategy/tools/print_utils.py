@@ -14,6 +14,21 @@ def print_status(message, color = TextColors.RESET):
 
 
 class printer:
+
+    def help():
+        command = "./maverick_v3"
+        command_tel = "./maverick_v3 --telegram"
+
+        message = (
+            "Hey 🫠 Welcome to Mavery RSI Version 3.0.1\n"
+            f"1. Run {command} to execute the program !\n"
+            f"2. Run {command_tel} to receive telegram message when a trade is taken \n"
+            "If you have any other questions or need further assistance, feel free to ask! Happy trading! 📈 \n"
+        )
+
+        playsound("../../Source/son/success.mp3")
+        print(message)
+        
     def print_ascii_art():
         try:
             with open("../../Source/text/ascii.txt", "r") as file:
