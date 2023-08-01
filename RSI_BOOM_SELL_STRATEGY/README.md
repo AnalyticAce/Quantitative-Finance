@@ -20,7 +20,7 @@ The project is organized into several directories:
 - `Backtest`: Contains the Jupyter notebook `backtest.ipynb`, which performs backtesting on the Maverick RSI Strategy using historical data and showcases the results in the form of images.
 - `Documentation`: Contains the Jupyter notebook `maverick.ipynb`, which provides detailed documentation and explanations for the Maverick RSI Strategy.
 - `Obsolete`: Contains older versions of the strategy script (`maverick_rsi_v1.py` and `maverick_rsi_v2.py`) that are no longer in use.
-- `Source`: Contains auxiliary files used in the project, including ASCII art, backtest result images, and the `requirements.txt` file.
+- `Source`: Contains auxiliary files used in the project, including ASCII art, backtest result images, sounds and the `requirements.txt` file.
 - `Strategy`: Contains the main implementation of the Maverick RSI Strategy in the `maverick_v3.py` script.
 - `README.md`: The current file, providing an overview of the project.
 
@@ -36,10 +36,10 @@ The `Obsolete` directory houses older versions of the strategy script that are n
 
 The `Source` directory contains auxiliary files used in the project:
 
-- `ascii.txt`: ASCII art used for decorative purposes.
-- `backtest.png`: An image showcasing the performance of the strategy during backtesting.
-- `profit.png`: An image showcasing the profit generated during backtesting.
-- `requirements.txt`: A file listing the required Python packages and their versions to run the Maverick RSI Strategy. You can install these dependencies using `pip` with the command `pip install -r Source/requirements.txt`.
+- `text/ascii.txt`: ASCII art used for decorative purposes.
+- `image/backtest.png`: An image showcasing the performance of the strategy during backtesting.
+- `image/profit.png`: An image showcasing the profit generated during backtesting.
+- `text/requirements.txt`: A file listing the required Python packages and their versions to run the Maverick RSI Strategy. You can install these dependencies using `pip` with the command `pip install -r Source/text/requirements.txt`.
 
 ## Strategy
 
@@ -54,10 +54,10 @@ The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which p
 ### Backtest Results
 
 #### Performance Chart
-![Performance Chart](Source/backtest.png)
+![Performance Chart](Source/image/backtest.png)
 
 #### Profit Chart (With an Initial Capital of $10)
-![Profit Chart](Source/profit.png)
+![Profit Chart](Source/image/profit.png)
 
 # ***`DISCLAIMER : This not an Investment Advice`***
 In a market that is not affected by fundamental news and where algorithmic trading is based solely on real-life market data, it is theoretically possible to build a strategy that appears to be 100% profitable within historical backtests. However, achieving consistent and guaranteed profitability in real-world trading is extremely challenging and often unrealistic.

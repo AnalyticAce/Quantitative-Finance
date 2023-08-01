@@ -3,8 +3,8 @@ import pandas as pd
 import ta.momentum as momentum
 from datetime import datetime, timedelta
 from termcolor import colored
-import time 
-
+from playsound import playsound
+import time
 
 class TextColors:
     RESET = "\033[0m"
@@ -13,20 +13,22 @@ class TextColors:
     YELLOW = "\033[33m"
     BLINK = "\033[5m"
 
-def print_status(message, color=TextColors.RESET):
+def print_status(message, color = TextColors.RESET):
     print(f"{color}{message}{TextColors.RESET}")
 
 def print_ascii_art():
     try:
-        with open("Source/ascii.txt", "r") as file:
+        with open("../Source/text/ascii.txt", "r") as file:
             ascii_art = file.read()
             print(f"{TextColors.BLINK}{TextColors.GREEN}{ascii_art}{TextColors.RESET}")
     except FileNotFoundError:
+        playsound("../Source/son/error.mp3")
         print_status("ASCII art file not found.", TextColors.RED)
 
 def get_historical_data(symbol, timeframe, number_of_data = 1000):
     # Initialize the MetaTrader 5 terminal
     if not mt5.initialize():
+        playsound("../Source/son/error.mp3")
         print(colored("initialize() failed ☢️", "red"))
         mt5.shutdown()
         return None
@@ -36,13 +38,14 @@ def get_historical_data(symbol, timeframe, number_of_data = 1000):
 
     # Check if data is retrieved successfully
     if rates is None:
+        playsound("../Source/son/error.mp3")
         print(colored("Failed to retrieve historical data. ☢️", "red"))
         mt5.shutdown()
         return None
 
     # Transform tuples into a DataFrame
     df = pd.DataFrame(rates)
-    df["time"] = pd.to_datetime(df["time"], unit= "s")
+    df["time"] = pd.to_datetime(df["time"], unit = "s")
     df = df.set_index("time")
 
     # Shutdown the MetaTrader 5 terminal
@@ -56,6 +59,7 @@ def calculate_rsi(df, period = 14):
         rsi_indicator = momentum.RSIIndicator(df["close"], window = period)
         df["rsi"] = rsi_indicator.rsi()
     except Exception as e:
+        playsound("../Source/son/error.mp3")
         print(colored("Error calculating RSI:" + str(e), + "☣️" "red"))
 
 def execute_sell_trade(df, symbol, lot_size=0.2, initial_balance=10):
@@ -67,9 +71,10 @@ def execute_sell_trade(df, symbol, lot_size=0.2, initial_balance=10):
     # is lower than the open of the current bar, and the previous close
     # was higher than the open of the previous bar
     if current_bar["rsi"] > 70 and current_bar["close"] < current_bar["open"] \
-            and previous_bar["close"] > previous_bar["open"]:
+        and previous_bar["close"] > previous_bar["open"]:
         # Initialize the MetaTrader 5 terminal
         if not mt5.initialize():
+            playsound("../Source/son/error.mp3")
             print(colored("initialize() failed ☢️", "red"))
             mt5.shutdown()
             return
@@ -96,12 +101,13 @@ def execute_sell_trade(df, symbol, lot_size=0.2, initial_balance=10):
             # Get the current account balance
             account_info = mt5.account_info()
             current_balance = account_info.balance
-            
+
             # Calculate return on investment (ROI) percentage
             roi_percentage = ((current_balance - initial_balance) / initial_balance) * 100
 
             roi_color = "🔴" if roi_percentage < 0 else "🟢"
             # Print trade execution details in a stylized manner
+            playsound("../Source/son/success.mp3")
             print(colored("===== Trade Executed 🚀 =====", "green"))
             print(colored(f"=====  SELL {symbol} 📈 =====", "red", attrs=["blink", "underline"]))
             print(colored(f"Date/Time: {datetime.now()} ⏰", "yellow", attrs=["blink", "underline"]))
@@ -112,6 +118,7 @@ def execute_sell_trade(df, symbol, lot_size=0.2, initial_balance=10):
             print(colored("=============================", "green"))
 
         else:
+            playsound("../Source/son/error.mp3")
             print(colored("Failed to execute trade. 🆘", "red"))
 
 
@@ -128,6 +135,7 @@ def find_filling_mode(symbol):
         }
         result = mt5.order_check(request)
         if result.comment == "Done":
+            playsound("../Source/son/error.mp3")
             print(colored("===== Trade Closed ❌ =====", "red"))
             break
     return i
@@ -147,6 +155,7 @@ def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period =
                 execute_sell_trade(df, symbol, lot_size)
 
         except Exception as e:
+            playsound("../Source/son/error.mp3")
             print(colored("Error executing the strategy: " + str(e), + "☣️" "red"))
 
         # Wait for some time before checking for opportunities again
