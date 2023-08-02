@@ -90,7 +90,7 @@ The `Strategy` directory is the core of the Maverick RSI Strategy:
 
 ## Backtest ✅
 
-The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which performs backtesting on the Maverick RSI Strategy using historical price data stored in the `historical_data.csv` file. The notebook uses the `maverick_v3.py` script to execute the strategy and evaluates its performance based on the historical data. The results are displayed in the form of images, including a performance chart and a profit chart. The `backtest_v2.ipynb` file backest extra/other metrics of the strategy
+The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which performs backtesting on the Maverick RSI Strategy using historical price data stored in the `historical_data.csv` file. The notebook uses the `maverick_v3.py` script to execute the strategy and evaluates its performance based on the historical data. The results are displayed in the form of images, including a performance chart and a profit chart. The `backtest_v2.ipynb` file backest extra/other metrics of the strategy, the `telegram.py` simulate an example of the telegram messages that could be sent to the bot.
 
 ### Backtest Results 🔮
 
