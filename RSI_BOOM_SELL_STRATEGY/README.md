@@ -6,6 +6,8 @@
 
 Maverick RSI Strategy is a simple automated trading strategy based on the Relative Strength Index (RSI) indicator. It uses the MetaTrader 5 platform to retrieve historical price data, calculate the RSI, and execute sell trades when specific conditions are met.
 
+***NB: This Strategy is only Applied on Boom 1000 Index, Boom 500 Index and Boom 300 Index.***
+
 ## Project Structure 🌳
 
 The project is organized into several directories:
@@ -69,6 +71,10 @@ The `Source` directory contains auxiliary files used in the project:
 - `image`: Contains backtest result images, including `backtest.png` and `profit.png`.
 - `son`: Contains sound files used for notifications, including `error.mp3` and `success.mp3`.
 - `text`: Contains ASCII art used for decorative purposes in `ascii.txt` and the `requirements.txt` file listing the required Python packages and their versions to run the Maverick RSI Strategy. You can install these dependencies using `pip` with the command `pip install -r Source/text/requirements.txt`.
+
+## Disclaimer ☣️⚠️⚠️
+
+***DISCLAIMER: This project is for educational and informational purposes only and does not constitute financial advice. Trading and investing in financial markets involves substantial risk and is not suitable for everyone. The information provided in this project is based on historical data and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project. You should carefully consider your financial situation and consult with a qualified professional before making any investment decisions.***
 
 ## Strategy 💸
 
