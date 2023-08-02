@@ -92,7 +92,7 @@ The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which p
 #### Performance Chart
 ![Performance Chart](Source/image/backtest.png)
 
-#### Profit Chart (With an Initial Capital of $10 in just 24h)
+#### Profit Chart (With an Initial Capital of $10 on the last 1000 candles)
 ![Profit Chart](Source/image/profit_1.png)
 
 #### History of trades on last 1000 candles
