@@ -1,8 +1,9 @@
 # Maverick RSI Strategy 🚀
-<div align="right">
+<div align="center">
   <img src="Source/image/maverick.png" width="200">
 </div>
 
+# Table of contents
 - [Features ⚔️](#features-️)
 - [Project Structure 🌳](#project-structure-)
 - [Documentation 📚](#documentation-)
