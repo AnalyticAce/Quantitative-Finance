@@ -1,22 +1,8 @@
 # Maverick RSI Strategy 🚀
 
-<div align="center">
-  <style>
-    @keyframes rotate360 {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-    img {
-      animation: rotate360 5s linear infinite;
-    }
-  </style>
-  <img src="Source/image/maverick.png" width="200">
-</div>
-
+<p align="center">
+  <img src="Source/image/maverick.png" width="300" alt="Maverick Logo">
+</p>
 
 # Table of contents
 - [Features ⚔️](#features-️)
