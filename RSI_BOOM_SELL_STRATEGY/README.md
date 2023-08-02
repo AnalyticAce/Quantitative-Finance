@@ -86,7 +86,7 @@ The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which p
 
 ### Backtest Results 🔮
 
-####History of winning/lossing trades on last 1000 candles
+#### History of winning/lossing trades on last 1000 candles
 ![winning_lossing histo](Source/image/winloss.png)
 
 #### Performance Chart
