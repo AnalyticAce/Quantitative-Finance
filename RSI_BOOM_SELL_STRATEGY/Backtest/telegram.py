@@ -3,12 +3,12 @@
 import MetaTrader5 as mt5
 import pandas as pd
 import ta.momentum as momentum
-from telegram.print_utils import printer, print_status
+from Strategy.tools.print_utils import printer, print_status
 from datetime import datetime
 import telebot
 import time
 from sys import *
-from secret import credentials
+from secret import credentials # to be created and added manually in th current directory
 
 telegram_token = credentials.YOUR_TELEGRAM_TOKEN
 
