@@ -86,11 +86,19 @@ The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which p
 
 ### Backtest Results 🔮
 
+####History of winning/lossing trades on last 1000 candles
+![winning_lossing histo](Source/image/winloss.png)
+
 #### Performance Chart
 ![Performance Chart](Source/image/backtest.png)
 
 #### Profit Chart (With an Initial Capital of $10 in just 24h)
-![Profit Chart](Source/image/profit.png)
+![Profit Chart](Source/image/profit_1.png)
+
+####History of trades on last 1000 candles
+![History Chart](Source/image/candlestick2.png)
+
+![History Chart](Source/image/candlestick1.png)
 
 ## Telegram Signal and Help
 
