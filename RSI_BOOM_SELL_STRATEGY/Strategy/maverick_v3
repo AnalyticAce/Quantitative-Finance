@@ -87,13 +87,13 @@ def execute_sell_trade(df, symbol, lot_size = 0.2, initial_balance = 10.0):
 
             if telegram_enabled:
                 telegram_message = (
-                    f'<b><font color="#00FF00">Trade Executed 🚀</font></b>\n'
-                    f'<b><font color="#FF0000">SELL {symbol} 📈</font></b>\n'
-                    f'<i><font color="#FFFF00">Date/Time: {datetime.now()} ⏰</font></i>\n'
+                    f'<b>Trade Executed 🚀</b>\n\n'
+                    f'<b>SELL {symbol} 📈</b>\n\n'
+                    f'<i>Date/Time: {datetime.now()} ⏰</i>\n\n'
                     f'<b>Symbol: {symbol} 💱</b>\n'
-                    f'<b>Price: {result.price}  💵</b>\n'
-                    f'<b>Current Account Balance: ${current_balance} 💰</b>\n'
-                    f'<b>ROI since Initial Capital:</b> <font color="{roi_color}"><b>{roi_percentage:.2f}%</b></font>\n'
+                    f'<b>Price: {price}  💵</b>\n'
+                    f'<b>Current Account Balance: ${current_balance} 💰</b>\n\n'
+                    f'<b>ROI since Initial Capital:</b> {roi_color}<b>{roi_percentage:.2f}%</b>\n\n'
                 )
                 
                 bot.send_message(credentials.CHAT_ID, telegram_message, parse_mode="HTML")
