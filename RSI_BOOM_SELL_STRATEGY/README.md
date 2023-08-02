@@ -1,11 +1,8 @@
 
 
 # Maverick RSI Strategy 🚀
-<p align="left">
-  <img src="Source/image/maverick.png" width="300" alt="Maverick Logo">
-</p>
 
-<p align="right">
+<p align="center">
   <img src="Source/image/maverick.png" width="300" alt="Maverick Logo">
 </p>
 
