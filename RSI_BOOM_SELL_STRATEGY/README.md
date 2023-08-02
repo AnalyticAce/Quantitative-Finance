@@ -1,9 +1,10 @@
-<p align="right">
-  <img src="Source/image/maverick.png" width="200" alt="Maverick Logo">
-</p>
+
 
 # Maverick RSI Strategy 🚀
 
+<p align="right">
+  <img src="Source/image/maverick.png" width="300" alt="Maverick Logo">
+</p>
 
 Maverick RSI Strategy is a simple automated trading strategy based on the Relative Strength Index (RSI) indicator. It uses the MetaTrader 5 platform to retrieve historical price data, calculate the RSI, and execute sell trades when specific conditions are met.
 
