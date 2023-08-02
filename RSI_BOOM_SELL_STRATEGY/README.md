@@ -1,5 +1,5 @@
 <p align="right">
-  <img src="Source/image/maverick.png" width="500" alt="Maverick Logo">
+  <img src="Source/image/maverick.png" width="200" alt="Maverick Logo">
 </p>
 
 # Maverick RSI Strategy 🚀
