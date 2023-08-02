@@ -92,7 +92,7 @@ def execute_sell_trade(df, symbol, lot_size = 0.2, initial_balance = 10.0):
                     f'<b>SELL {symbol} 📈</b>\n\n'
                     f'<i>Date/Time: {datetime.now()} ⏰</i>\n\n'
                     f'<b>Symbol: {symbol} 💱</b>\n'
-                    f'<b>Price: {price}  💵</b>\n'
+                    f'<b>Price: {result.price}  💵</b>\n'
                     f'<b>Current Account Balance: ${current_balance} 💰</b>\n\n'
                     f'<b>ROI since Initial Capital:</b> {roi_color}<b>{roi_percentage:.2f}%</b>\n\n'
                 )
