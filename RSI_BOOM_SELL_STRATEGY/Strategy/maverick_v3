@@ -86,6 +86,7 @@ def execute_sell_trade(df, symbol, lot_size = 0.2, initial_balance = 10.0):
             roi_color = "🔴" if roi_percentage < 0 else "🟢"
 
             if telegram_enabled:
+
                 telegram_message = (
                     f'<b>Trade Executed 🚀</b>\n\n'
                     f'<b>SELL {symbol} 📈</b>\n\n'
