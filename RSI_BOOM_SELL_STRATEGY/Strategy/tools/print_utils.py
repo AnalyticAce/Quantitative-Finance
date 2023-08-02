@@ -16,7 +16,7 @@ def print_status(message, color = TextColors.RESET):
 class printer:
 
     def help():
-        command = "./maverick_v3"
+        command = "./maverick_v3 run"
         command_tel = "./maverick_v3 --telegram"
 
         message = (

@@ -12,6 +12,42 @@ The project is organized into several directories:
 - `Source`: Contains auxiliary files used in the project, including ASCII art, backtest result images, sounds, and the `requirements.txt` file.
 - `Strategy`: Contains the main implementation of the Maverick RSI Strategy in the `maverick_v3.py` script, along with a `tools` directory that houses the `print_utils.py` module for improved code readability.
 
+# Features
+
+The Maverick RSI Strategy comes with various features to facilitate automated trading and backtesting. Below are the current features of the strategy and upcoming features planned for future updates:
+
+## Current Features
+
+- [x] **RSI Sell Strategy**: The strategy is based on the Relative Strength Index (RSI) indicator and executes sell trades when specific RSI conditions are met.
+
+- [x] **Automated Trading**: The strategy automatically monitors the market for sell trade opportunities and executes trades without manual intervention.
+
+- [x] **Backtesting**: The `backtest.ipynb` Jupyter notebook allows you to perform backtesting using historical price data to evaluate the strategy's performance.
+
+- [x] **Performance Visualization**: Backtest results are visualized with performance charts showcasing account balance and profit over time.
+
+- [x] **Telegram Signal**: Receive Telegram messages with trade notifications when a sell trade is executed.
+
+- [x] **Help Function**: The `help()` function provides a quick overview of how to run the program and set up the Telegram bot.
+
+## Upcoming Features
+
+- [ ] **Buy Strategy**: Implementation of a buy strategy based on the RSI indicator to execute buy trades when specific conditions are met.
+
+- [ ] **Improved Risk Management**: Enhanced risk management techniques to optimize trade size and minimize potential losses.
+
+- [ ] **Interactive Configuration**: User-friendly interface for adjusting strategy parameters, such as RSI period and lot size.
+
+- [ ] **Email Notifications**: Receive email notifications when a sell or buy trade is executed.
+
+- [ ] **Advanced Performance Metrics**: Addition of advanced performance metrics, such as Sharpe ratio and drawdown analysis.
+
+- [ ] **Real-Time Trading**: Integration with real-time data feeds for live trading.
+
+- [ ] **Machine Learning Enhancements**: Application of machine learning techniques to enhance strategy performance and adaptability.
+
+We are continuously working on improving the Maverick RSI Strategy to make it more robust, flexible, and user-friendly. Your feedback and contributions are highly valuable in shaping the future development of this project. If you have any suggestions or ideas for new features or improvements, feel free to open an [issue](https://github.com/AnalyticAce/Algorithmic-Trading-Projects/issues) on GitHub to discuss them. Stay tuned for updates and happy trading! 📈
+
 ## Documentation
 
 The `Documentation` directory contains the `maverick.ipynb` Jupyter notebook, which serves as comprehensive documentation for the Maverick RSI Strategy. The notebook includes detailed explanations of the strategy's components, such as data retrieval, RSI calculation, and trade execution. It also provides insights into the trading logic and considerations for the strategy's implementation.
@@ -98,6 +134,29 @@ You can install these dependencies using `pip` with the command:
 ```python
 pip install -r Source/text/requirements.txt
 ```
+## How Run the Program
+Now that you followed the steps above and setup the necessary dependancies let run the program
+
+```python
+./Strategy/maverick_v3 --run
+```
+
+# Other Requirements
+
+To set up the Maverick RSI Strategy and run it successfully, you need to ensure that you have the following software installed on your system:
+
+1. **Python**: Python is the programming language used to develop the Maverick RSI Strategy. Make sure you have Python installed on your computer. You can download the latest version of Python from the official website: [https://www.python.org/downloads/](https://www.python.org/downloads/). After downloading, follow the installation instructions for your operating system.
+
+2. **Visual Studio Code (VSCode)**: Visual Studio Code is an integrated development environment (IDE) that provides a powerful and user-friendly interface for coding Python scripts. You can download VSCode from the official website: [https://code.visualstudio.com/](https://code.visualstudio.com/). Once downloaded, install VSCode by following the installation instructions for your operating system.
+
+3. **MetaTrader 5**: MetaTrader 5 is the trading platform used to retrieve historical price data and execute trades for the Maverick RSI Strategy. You can download MetaTrader 5 from the official MetaQuotes website: [https://www.metatrader5.com/en/download](https://www.metatrader5.com/en/download). After downloading, install MetaTrader 5 by following the installation instructions for your operating system.
+
+4. **MetaTrader 5 Terminal and Account**: After installing MetaTrader 5, you need to open a trading account within the platform. This trading account will be used to access historical price data and execute trades. If you don't have a trading account, you can open a demo account for testing purposes. To do this, open MetaTrader 5, go to "File" > "Open an Account", and follow the instructions to create a new demo account.
+
+Once you have Python, VSCode, and MetaTrader 5 installed and set up, you are ready to use the Maverick RSI Strategy for automated trading and backtesting. Before running the strategy, make sure you have completed the steps mentioned in the "Telegram Signal and Help" section to set up the Telegram bot and update the `secret.py` file with your Telegram API key and Chat ID (if you plan to use Telegram notifications). 
+
+If you encounter any issues during the setup process or have any questions about using the strategy, refer to the "Usage" and "Documentation" sections in this README for comprehensive instructions and explanations. Additionally, feel free to open an [issue](https://github.com/AnalyticAce/Algorithmic-Trading-Projects/issues) on GitHub for assistance or to report any problems you may encounter. Happy trading! 📈
+
 
 ## License
 
