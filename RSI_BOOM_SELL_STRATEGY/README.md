@@ -134,6 +134,9 @@ To get help and see available commands, run:
 ./Strategy/maverick_v3 --help
 ```
 
+#### Telegram Bot Result (Example)
+![Performance Chart](Source/image/telegram.jpeg)
+
 ## Requirements 📌
 
 The Maverick RSI Strategy requires the following Python packages:
