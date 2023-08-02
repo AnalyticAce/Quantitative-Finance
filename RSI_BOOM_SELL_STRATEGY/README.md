@@ -100,7 +100,7 @@ The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which p
 
 ![History Chart](Source/image/candlestick1.png)
 
-## Telegram Signal and Help
+## Telegram Signal and Help 🧑🏿‍💻
 
 To receive Telegram messages when a trade is taken, run the following command:
 
@@ -134,7 +134,7 @@ To get help and see available commands, run:
 ./Strategy/maverick_v3 --help
 ```
 
-#### Telegram Bot Result (Example)
+#### Telegram Bot Result (Example) 🤖
 ![Performance Chart](Source/image/telegram.jpeg)
 
 ## Requirements 📌
