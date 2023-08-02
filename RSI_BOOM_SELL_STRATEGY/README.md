@@ -48,36 +48,41 @@ The `Backtest` directory contains the `backtest.ipynb` Jupyter notebook, which p
 #### Profit Chart (With an Initial Capital of $10)
 ![Profit Chart](Source/image/profit.png)
 
-# ***`DISCLAIMER: This is not an Investment Advice`***
-In a market that is not affected by fundamental news and where algorithmic trading is based solely on real-life market data, it is theoretically possible to build a strategy that appears to be 100% profitable within historical backtests. However, achieving consistent and guaranteed profitability in real-world trading is extremely challenging and often unrealistic.
+## Telegram Signal and Help
 
-There are several factors to consider:
+To receive Telegram messages when a trade is taken, run the following command:
 
-1. Historical data vs. live market conditions: Historical data might not fully reflect the complexities and uncertainties of live market conditions, which can lead to discrepancies between backtesting results and actual performance.
-
-2. Transaction costs: Real-world trading involves transaction costs, such as commissions and slippage, which can significantly impact overall profitability.
-
-3. Market dynamics: Markets are constantly changing and evolving, making it difficult for a single strategy to remain consistently profitable over time.
-
-4. Overfitting: There is a risk of overfitting a strategy to historical data, where the algorithm performs exceptionally well on past data but fails in live trading due to a lack of adaptability.
-
-5. Black swan events: Unpredictable and extreme market events, also known as black swan events, can disrupt even the most well-designed strategies.
-
-Instead of seeking a 100% profitable strategy, traders and algorithm developers focus on building robust, well-tested strategies that aim for consistent and sustainable returns while managing risks effectively. Risk management, diversification, and continuous evaluation and adjustment are key components of successful algorithmic trading strategies.
-
-# ***Usage***
-
-To use the Maverick RSI Strategy, follow these steps:
-
-1. Ensure you have the required Python packages installed. You can install them using the command:
 ```python
-pip install -r Source/requirements.txt
+./Strategy/maverick_v3  --telegram
 ```
-2. Open the `maverick_v3.py` script located in the `Strategy` directory and adjust the strategy parameters (e.g., symbol, timeframe, lot size, data length, and RSI period) based on your trading preferences and the financial instrument you want to trade.
-3. Run the `maverick_v3.py` script using a Python interpreter.
-4. The strategy will continuously monitor the market for sell trade opportunities based on the RSI indicator and execute sell trades when specific conditions are met.
 
-# ***Requirements***
+To set up the Telegram bot, follow these steps:
+
+1. Search for the "BotFather" bot in the Telegram app.
+2. Start a chat with the BotFather and use the command "/newbot" to create a new bot.
+3. Follow the instructions to choose a name and username for your bot.
+4. Once the bot is created, the BotFather will provide you with a token. Copy this token; you will need it later.
+5. Create a new file named `secret.py` inside the `Strategy` directory.
+6. Inside `secret.py`, define a class named `credentials` and add the following lines:
+
+```python
+class credentials:
+    YOUR_TELEGRAM_TOKEN = "YOUR_TELEGRAM_API_KEY"
+    CHAT_ID = "YOUR_CHAT_ID"
+```
+
+Replace `"YOUR_TELEGRAM_API_KEY"` with the token you obtained from the BotFather, and `"YOUR_CHAT_ID"` (To find `"YOUR_CHAT_ID"` search for the "userinfobot" bot in the Telegram app and get the necessary informations using "/start") with your Telegram Chat ID.
+7. Save the changes to the `secret.py` file.
+
+After setting up the Telegram bot and updating the `secret.py` file with your API key and Chat ID, you can run the Maverick RSI Strategy with Telegram notifications as explained in the "Usage" section.
+
+To get help and see available commands, run:
+
+```python
+./Strategy/maverick_v3 --help
+```
+
+## Requirements
 
 The Maverick RSI Strategy requires the following Python packages:
 
@@ -85,13 +90,16 @@ The Maverick RSI Strategy requires the following Python packages:
 - pandas==1.3.3
 - ta==0.7.0
 - termcolor==1.1.0
+- playsound
+- telebot
+- pyTelegramBotAPI
 
 You can install these dependencies using `pip` with the command:
 ```python
 pip install -r Source/text/requirements.txt
 ```
 
-# ***License***
+## License
 
 This project is licensed under the [MIT License](LICENSE). Feel free to modify and adapt the strategy according to your needs. However, please note that trading in financial markets involves risks, and the strategy's performance may vary depending on various factors. It is recommended to thoroughly test the strategy and exercise caution when using it for real trading. The authors of this project are not responsible for any financial losses incurred while using the strategy.
 

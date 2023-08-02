@@ -4,3 +4,4 @@ ta==0.7.0
 termcolor==1.1.0
 playsound
 telebot
+pyTelegramBotAPI
