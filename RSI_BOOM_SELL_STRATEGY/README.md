@@ -43,7 +43,7 @@ The Maverick RSI Strategy comes with various features to facilitate automated tr
 
 - [ ] 📣 **Buy Strategy**: Implementation of a buy strategy based on the RSI indicator to execute buy trades when specific conditions are met.
 
-- [ ] 📣 **Addictional Telegram commands**: Increase the number of telegram commands eg: A command to know the total number of trades, profit for a giving date or period of time.
+- [ ] 📣 **Add Telegram commands**: Increase the number of telegram commands eg: A command to know the total number of trades, profit for a giving date or period of time.
 
 - [ ] 📣 **Improved Risk Management**: Enhanced risk management techniques to optimize trade size and minimize potential losses.
 
