@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import MetaTrader5 as mt5
 import pandas as pd
 import ta.momentum as momentum
@@ -8,7 +6,7 @@ from datetime import datetime
 import telebot
 import time
 from sys import *
-from secret import credentials # to be created and added manually in th current directory
+#from secret import credentials # to be created and added manually in th current directory
 
 telegram_token = credentials.YOUR_TELEGRAM_TOKEN
 
