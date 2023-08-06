@@ -113,7 +113,7 @@ def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
         time.sleep(sleep_duration)
 
 if __name__ == "__main__":
-  
+
     symbol = "Boom 1000 Index"
     timeframe = mt5.TIMEFRAME_M1
 
