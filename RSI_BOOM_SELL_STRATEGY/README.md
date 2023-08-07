@@ -108,10 +108,10 @@ maverick_rsi_v3.py` script to execute the strategy and evaluates its performance
 ### Backtest Results 🔮
 
 #### History of trades on the last candles
-![winning_lossing histo](Source/image/trades.png)
+![histo](Source/image/trades.png)
 
 #### History of trades on the last 1000 candles
-![History Chart](Source/image/newplot.png)
+![Chart](Source/image/newplot.png)
 
 
 ## Telegram Signal and Help 🧑🏿‍💻
