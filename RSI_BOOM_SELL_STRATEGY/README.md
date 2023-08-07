@@ -126,7 +126,7 @@ maverick_rsi_v3.py` script to execute the strategy and evaluates its performance
 To receive Telegram messages when a trade is taken, run the following command:
 
 ```python
-./Strategy/maverick_rsi_v3 --telegram
+./Strategy/maverick_rsi_v3.py --telegram
 ```
 
 To set up the Telegram bot, follow these steps:
@@ -152,7 +152,7 @@ After setting up the Telegram bot and updating the `secret.py` file with your AP
 To get help and see available commands, run:
 
 ```python
-./Strategy/maverick_rsi_v3 --help
+./Strategy/maverick_rsi_v3.py --help
 ```
 
 ### Telegram Bot Result (Example) 🤖
@@ -180,7 +180,7 @@ pip install -r Source/text/requirements.txt
 Now that you have followed the steps above and set up the necessary dependencies, let's run the program:
 
 ```python
-./Strategy/maverick_rsi_v3 --run
+./Strategy/maverick_rsi_v3.py --run
 ```
 
 ## Other Requirements 📌📌
