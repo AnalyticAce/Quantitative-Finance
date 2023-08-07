@@ -41,6 +41,17 @@ def get_historical_data(symbol, timeframe, number_of_data=1000):
 
 def calculate_rsi(df, period=14):
 
+     """
+    Calculates the Relative Strength Index (RSI) for a given DataFrame.
+
+    Parameters:
+        df (pd.DataFrame): DataFrame containing the 'close' price column.
+        period (int, optional): The period for RSI calculation. Default is 14.
+
+    Returns:
+        None
+    """
+    
     try:
         rsi_indicator = momentum.RSIIndicator(df["close"], window=period)
         df["rsi"] = rsi_indicator.rsi()
