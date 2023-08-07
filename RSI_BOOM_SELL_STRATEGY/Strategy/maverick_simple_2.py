@@ -102,6 +102,32 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
 
     Returns:
         None
+
+    Explanation:
+        The `execute_sell_trade` function implements the sell part of the RSI (Relative Strength Index) 
+        strategy based on specific conditions. The strategy aims to capture potential overbought market 
+        conditions using the RSI indicator. The sell trade is taken when the RSI value is above 70, and a 
+        particular candle pattern is observed.
+
+        Sell Conditions:
+        1. RSI is above 70, indicating an overbought market.
+        2. The candle two periods ago (confirmation candle) is green (close > open).
+        3. The previous candle (immediate previous to the current candle) is red (close < open).
+        4. The current candle (most recent) is also red (close < open).
+
+        Execution:
+        Once all the sell conditions are met, a sell trade is executed at the current market price. The 
+        trade is taken on the next red candle after the green confirmation candle. This means that when all 
+        conditions are satisfied, the function opens a sell trade at the open price of the next red candle. 
+
+        Exit:
+        The trade remains open until the close of the second red candle after the confirmation candle. The 
+        exit time and exit price are recorded based on the close price of the second red candle.
+
+        Note:
+        In a real trading scenario, additional risk management and stop-loss mechanisms should be 
+        implemented to mitigate potential losses.
+
     """
     
     current_bar = df.iloc[-1]
