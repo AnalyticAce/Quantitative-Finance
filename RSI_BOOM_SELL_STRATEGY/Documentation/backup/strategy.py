@@ -16,7 +16,7 @@ def get_historical_data(symbol, timeframe, number_of_data=1000):
 
     Returns:
         pd.DataFrame: DataFrame containing historical OHLCV data. The DataFrame has columns:
-                      'time', 'open', 'high', 'low', 'close', and 'tick_volume'.
+        'time', 'open', 'high', 'low', 'close', and 'tick_volume'.
     """
     
     if not mt5.initialize():
@@ -41,7 +41,7 @@ def get_historical_data(symbol, timeframe, number_of_data=1000):
 
 def calculate_rsi(df, period=14):
 
-     """
+    """
     Calculates the Relative Strength Index (RSI) for a given DataFrame.
 
     Parameters:
