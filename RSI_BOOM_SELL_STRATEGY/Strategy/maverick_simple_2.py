@@ -105,7 +105,21 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
 
 
 def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
+    
+    """
+    Runs the RSI sell strategy on historical data for the specified symbol.
 
+    Parameters:
+        symbol (str): The trading symbol to be used.
+        timeframe (int): The timeframe for historical data, e.g., mt5.TIMEFRAME_M1 for 1-minute data.
+        lot_size (float, optional): The lot size for the sell trades. Default is 0.2.
+        data_length (int, optional): The number of historical data points to fetch. Default is 1000.
+        period (int, optional): The period for RSI calculation. Default is 14.
+
+    Returns:
+        None
+    """
+    
     while True:
 
         try:
