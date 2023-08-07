@@ -12,17 +12,18 @@ class TextColors:
 def print_status(message, color = TextColors.RESET):
     print(f"{color}{message}{TextColors.RESET}")
 
-
 class printer:
 
     def help():
-        command = "./maverick_v3 run"
-        command_tel = "./maverick_v3 --telegram"
-
+        command = " python3 maverick_v3.py run"
+        command_ = "python3 maverick_v3.py --telegram"
+        command_t = "python3 maverick_v3.py --telcmd" # to be added (Upcomming)
+        
         message = (
-            "Hey 🫠 Welcome to Mavery RSI Version 3.0.1\n"
+            "Hey 🫠 Welcome to Mavery RSI Version 4.0.1\n"
             f"1. Run {command} to execute the program !\n"
-            f"2. Run {command_tel} to receive telegram message when a trade is taken \n"
+            f"2. Run {command_} to receive telegram message when a trade is taken \n"
+            f"3. Run {command_t} to see available telegram commands \n"
             "If you have any other questions or need further assistance, feel free to ask! Happy trading! 📈 \n"
         )
 
