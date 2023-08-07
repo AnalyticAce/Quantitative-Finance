@@ -58,6 +58,18 @@ def find_filling_mode(symbol):
 
 def execute_sell_trade(df, symbol, lot_size=0.2):
 
+    """
+    Executes the RSI sell trade based on the given strategy conditions.
+
+    Parameters:
+        df (pd.DataFrame): DataFrame containing historical data, including RSI values.
+        symbol (str): The trading symbol to execute the sell trade.
+        lot_size (float, optional): The lot size for the sell trade. Default is 0.2.
+
+    Returns:
+        None
+    """
+    
     current_bar = df.iloc[-1]
     previous_bar = df.iloc[-2]
     confirmation_bar = df.iloc[-3]
