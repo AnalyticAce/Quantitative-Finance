@@ -4,7 +4,7 @@ import ta.momentum as momentum
 from datetime import datetime
 import time
 
-# Refer to ../Obselete to add telegram feature
+# Refer to ../Obselete to add printing telegram feature
 
 def get_historical_data(symbol, timeframe, number_of_data=1000):
     
