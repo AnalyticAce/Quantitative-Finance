@@ -20,7 +20,7 @@ class printer:
         command_t = "python3 maverick_v3.py --telcmd" # to be added as arg (Upcomming)
         
         message = (
-            "Hey 🫠 Welcome to Mavery RSI Version 4.0.1\n"
+            "Hey 🫠 Welcome to Mavery RSI Version 3.0.1\n"
             f"1. Run {command} to execute the program !\n"
             f"2. Run {command_} to receive telegram message when a trade is taken \n"
             f"3. Run {command_t} to see available telegram commands \n"
@@ -34,6 +34,14 @@ class printer:
         
         message = (
             # To be completed
+            "Hey 🫠 Welcome to Mavery RSI Version 4.0.1\n"
+            "This are the available commands with the telegram bot\n"
+            "1. `/total_trades`: Sends the total number of trades.\n"
+            "2. `/profit_for_date YYYY-MM-DD`: Sends the profit for the given date (replace `YYYY-MM-DD` with the desired date).\n"
+            "3. `/profit_for_period YYYY-MM-DD YYYY-MM-DD`: Sends the profit for the given period (replace both `YYYY-MM-DD` with the start and end dates of the desired period)\n"
+            "                                     \n"
+            "                                     \n"
+            "Usage : \n"
             "If you have any other questions or need further assistance, feel free to ask! Happy trading! 📈 \n"
         )
 
