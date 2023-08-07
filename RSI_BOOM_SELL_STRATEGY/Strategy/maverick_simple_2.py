@@ -60,6 +60,16 @@ def calculate_rsi(df, period=14):
 
 def find_filling_mode(symbol):
 
+    """
+    Finds the appropriate filling mode for trading orders.
+
+    Parameters:
+        symbol (str): The trading symbol for which the filling mode is required.
+
+    Returns:
+        int: The appropriate filling mode value (0 for FILLING_FOK or 1 for FILLING_IOC).
+    """
+    
     for i in range(2):
 
         request = {
