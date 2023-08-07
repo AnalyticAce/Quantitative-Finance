@@ -1,113 +1,172 @@
 import MetaTrader5 as mt5
 import pandas as pd
-import ta
+import ta.momentum as momentum
+from Strategy.tools.print_utils import printer, print_status
 from datetime import datetime
+import telebot
+import time
+from sys import *
+#from secret import credentials # to be created and added manually in th current directory
 
-class RsiSellStrategy:
+telegram_token = credentials.YOUR_TELEGRAM_TOKEN
 
-    def __init__(self, symbol, timeframe, lot_size = 1):
-        self.symbol = symbol
-        self.timeframe = timeframe
-        self.lot_size = lot_size
+bot = telebot.TeleBot(telegram_token)
 
-    def initialize_terminal(self):
-        mt5.initialize()
+def get_historical_data(symbol, timeframe, number_of_data = 1000):
 
-    def shutdown_terminal(self):
+    if not mt5.initialize():
+        print_status("initialize() failed ☢️", color = "red")
+        mt5.shutdown()
+        return None
+
+    rates = mt5.copy_rates_from_pos(symbol, timeframe, 0, number_of_data)
+
+    if rates is None:
+        print_status("Failed to retrieve historical data. ☢️", color = "red")
+        mt5.shutdown()
+        return None
+
+    df = pd.DataFrame(rates)
+    df["time"] = pd.to_datetime(df["time"], unit = "s")
+    df = df.set_index("time")
+
+    mt5.shutdown()
+
+    return df
+
+def calculate_rsi(df, period=14):
+
+    try:
+        rsi_indicator = momentum.RSIIndicator(df["close"], window = period)
+        df["rsi"] = rsi_indicator.rsi()
+    except Exception as e:
+        print_status(f"Error calculating RSI: {e}", color = "red")
+
+def execute_sell_trade(df, symbol, lot_size = 0.2, initial_balance = 10.0):
+
+    current_bar = df.iloc[-1]
+    previous_bar = df.iloc[-2]
+
+    if current_bar["rsi"] > 70 and current_bar["close"] < current_bar["open"] \
+        and previous_bar["close"] > previous_bar["open"]:
+
+        if not mt5.initialize():
+            print_status("initialize() failed ☢️", color = "red")
+            mt5.shutdown()
+            return
+
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": symbol,
+            "volume": lot_size,
+            "type": mt5.ORDER_TYPE_SELL,
+            "price": mt5.symbol_info_tick(symbol).bid,
+            "deviation": 10,
+            "magic": 0,
+            "comment": "RSI Sell Strategy",
+            "type_filling": find_filling_mode(symbol),
+            "type_time": mt5.ORDER_TIME_GTC
+        }
+        
+        result = mt5.order_send(request)
+
         mt5.shutdown()
 
-    def get_historical_data(self, number_of_data = 1000):
-        from_date = datetime.now()
+        if result.comment == "Accepted":
 
-        rates = mt5.copy_rates_from_pos(self.symbol, self.timeframe, 0, number_of_data)
+            account_info = mt5.account_info()
+            current_balance = account_info.balance
 
-        df = pd.DataFrame(rates)
+            roi_percentage = ((current_balance - initial_balance) / initial_balance) * 100
 
-        df["time"] = pd.to_datetime(df["time"], unit="s")
-        
-        df["time"] = pd.to_datetime(df["time"], format='%Y-%m-%d %H:%M:%S')
-        
-        df = df.set_index("time")
+            printer.print_trade_execution_details(symbol, result, current_balance, roi_percentage)
 
-        return df
+            roi_color = "🔴" if roi_percentage < 0 else "🟢"
 
-    def calculate_rsi(self, df, period = 14):
-        rsi_indicator = ta.momentum.RSIIndicator(df["close"], n=period)
-        df["rsi"] = rsi_indicator.rsi()
+            if telegram_enabled:
 
-    def execute_sell_trade(self):
-        current_bar = self.df.iloc[-1]
-        previous_bar = self.df.iloc[-2]
+                telegram_message = (
+                    f'<b>Trade Executed 🚀</b>\n\n'
+                    f'<b>SELL {symbol} 📈</b>\n\n'
+                    f'<i>Date/Time: {datetime.now()} ⏰</i>\n\n'
+                    f'<b>Symbol: {symbol} 💱</b>\n'
+                    f'<b>Price: {result.price}  💵</b>\n'
+                    f'<b>Current Account Balance: ${current_balance} 💰</b>\n\n'
+                    f'<b>ROI since Initial Capital:</b> {roi_color}<b>{roi_percentage:.2f}%</b>\n\n'
+                )
+                
+                bot.send_message(credentials.CHAT_ID, telegram_message, parse_mode="HTML")
 
-        if current_bar["rsi"] > 70 and current_bar["close"] < current_bar["open"] and previous_bar["close"] > previous_bar["open"]:
-            # Check if there is an existing sell trade
-            open_positions = mt5.positions_get(symbol = self.symbol)
-            sell_trade_exists = any(position.type == mt5.ORDER_SELL for position in open_positions)
+        else:
+            printer.print_trade_closed()
 
-            if not sell_trade_exists:
-                # Execute a sell trade
-                request = {
-                    "action": mt5.TRADE_ACTION_DEAL,
-                    "symbol": self.symbol,
-                    "volume": self.lot_size,
-                    "type": mt5.ORDER_SELL,
-                    "price": mt5.symbol_info_tick(self.symbol).ask,
-                    "deviation": 10,
-                    "type_time": mt5.ORDER_TIME_GTC
-                }
+def find_filling_mode(symbol):
+    
+    for i in range(2):
 
-                result = mt5.order_send(request)
-                if result.comment == "Request executed":
-                    print("Sell trade executed successfully.")
-                else:
-                    print("Error executing sell trade:", result.comment)
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": symbol,
+            "volume": mt5.symbol_info(symbol).volume_min,
+            "type": mt5.ORDER_TYPE_BUY,
+            "price": mt5.symbol_info_tick(symbol).ask,
+            "type_filling": i,
+            "type_time": mt5.ORDER_TIME_GTC
+        }
 
-    def close_sell_trade(self):
-        open_positions = mt5.positions_get(symbol = self.symbol)
-        for position in open_positions:
-            if position.type == mt5.ORDER_SELL:
-                request = {
-                    "position": position.ticket,
-                    "action": mt5.TRADE_ACTION_DEAL,
-                    "symbol": self.symbol,
-                    "volume": position.volume,
-                    "type": mt5.ORDER_BUY,
-                    "price": mt5.symbol_info_tick(self.symbol).bid,
-                    "deviation": 10,
-                    "type_time": mt5.ORDER_TIME_GTC
-                }
-                result = mt5.order_send(request)
-                if result.comment == "Request executed":
-                    print("Sell trade closed successfully.")
-                else:
-                    print("Error closing sell trade:", result.comment)
+        result = mt5.order_check(request)
+    
+        if result.comment == "Done":
+            printer.print_trade_closed()
+            break
+    
+    return i
 
-    def run_strategy(self, data_length=1000):
+def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period = 14):
+    
+    while True:
+    
         try:
-            self.initialize_terminal()
+            df = get_historical_data(symbol, timeframe, data_length)
 
-            # Retrieve historical data
-            self.df = self.get_historical_data(data_length)
-
-            # Calculate RSI
-            self.calculate_rsi(self.df)
-
-            # Execute sell trade if conditions are met
-            self.execute_sell_trade()
-
-            # Close sell trade if conditions are met
-            self.close_sell_trade()
+            if df is not None:
+                calculate_rsi(df, period)
+                
+                execute_sell_trade(df, symbol, lot_size)
 
         except Exception as e:
-            print("Error executing the strategy:", str(e))
+            print_status(f"Error executing the strategy: {e}", color="red")
 
-        finally:
-            self.shutdown_terminal()
+        sleep_duration = 60
+        printer.print_waiting_message(sleep_duration)
+        time.sleep(sleep_duration)
+
 
 if __name__ == "__main__":
-    symbol = ["BOOM1000", "BOOM500", "BOOM300"]  # Replace with your desired symbol
-    timeframe = mt5.TIMEFRAME_M1  # Replace with your desired timeframe
-    lot_size = 1.0  # Replace with your desired lot size
+    symbol = "Boom 1000 Index"
+    timeframe = mt5.TIMEFRAME_M1
 
-    strategy = RsiSellStrategy(symbol, timeframe, lot_size)
-    strategy.run_strategy()
+    lot_size = 0.2
+
+    initial_capital = 10.0
+    account_info = mt5.account_info()
+    current_balance = account_info.balance
+
+    multiplier = current_balance // initial_capital
+    lot_size += multiplier * 0.2
+
+    data_length = 1000
+    period = 14
+
+    if len(argv) > 1 and argv[1] == "--telegram":
+        telegram_enabled = True
+    else:
+        telegram_enabled = False
+
+    if len(argv) > 1 and argv[1] == "--help":
+        printer.help()
+
+    if len(argv) > 1 and argv[1] == "--run":
+        printer.print_ascii_art()
+
+        run_strategy(symbol, timeframe, lot_size, data_length, period)
