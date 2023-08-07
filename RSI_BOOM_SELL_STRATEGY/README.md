@@ -107,19 +107,12 @@ maverick_rsi_v3.py` script to execute the strategy and evaluates its performance
 
 ### Backtest Results 🔮
 
-#### History of winning/losing trades on the last 1000 candles
-![winning_lossing histo](Source/image/winloss.png)
-
-#### Performance Chart
-![Performance Chart](Source/image/backtest.png)
-
-#### Profit Chart (With an Initial Capital of $10 on the last 1000 candles)
-![Profit Chart](Source/image/profit_1.png)
+#### History of trades on the last candles
+![winning_lossing histo](Source/image/trades.png)
 
 #### History of trades on the last 1000 candles
-![History Chart](Source/image/candlestick2.png)
+![History Chart](Source/image/newplot.png)
 
-![History Chart](Source/image/candlestick1.png)
 
 ## Telegram Signal and Help 🧑🏿‍💻
 
