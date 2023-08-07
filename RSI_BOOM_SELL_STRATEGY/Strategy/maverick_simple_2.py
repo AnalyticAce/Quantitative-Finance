@@ -5,7 +5,20 @@ from datetime import datetime
 import time
 
 def get_historical_data(symbol, timeframe, number_of_data=1000):
+    
+    """
+    Fetches historical OHLCV (Open, High, Low, Close, Volume) data for a specific trading symbol.
 
+    Parameters:
+        symbol (str): The trading symbol to retrieve historical data.
+        timeframe (int): The timeframe for historical data, e.g., mt5.TIMEFRAME_M1 for 1-minute data.
+        number_of_data (int, optional): The number of historical data points to fetch. Default is 1000.
+
+    Returns:
+        pd.DataFrame: DataFrame containing historical OHLCV data. The DataFrame has columns:
+                      'time', 'open', 'high', 'low', 'close', and 'tick_volume'.
+    """
+    
     if not mt5.initialize():
         print("initialize() failed ☢️")
         mt5.shutdown()
