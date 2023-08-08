@@ -3,7 +3,7 @@ import pandas as pd
 import ta.momentum as momentum
 from datetime import datetime
 import time
-
+from Strategy.tools.print_utils import printer, print_status
 # Refer to ../Source/Obselete/maverick_v3 to add printing telegram feature
 
 def get_historical_data(symbol, timeframe, number_of_data=1000):
