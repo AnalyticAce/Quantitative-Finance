@@ -100,7 +100,29 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
         mt5.shutdown()
 
         if result.comment == "Accepted":
-            print("Sell executed")
+            account_info = mt5.account_info()
+            current_balance = account_info.balance
+
+            roi_percentage = ((current_balance - initial_balance) / initial_balance) * 100
+
+            printer.print_trade_execution_details(symbol, result, current_balance, roi_percentage)
+
+            roi_color = "🔴" if roi_percentage < 0 else "🟢"
+
+            if telegram_enabled:
+
+                telegram_message = (
+                    f'<b>Trade Executed 🚀</b>\n\n'
+                    f'<b>SELL {symbol} 📈</b>\n\n'
+                    f'<i>Date/Time: {datetime.now()} ⏰</i>\n\n'
+                    f'<b>Symbol: {symbol} 💱</b>\n'
+                    f'<b>Price: {result.price}  💵</b>\n'
+                    f'<b>Current Account Balance: ${current_balance} 💰</b>\n\n'
+                    f'<b>ROI since Initial Capital:</b> {roi_color}<b>{roi_percentage:.2f}%</b>\n\n'
+                )
+                
+                bot.send_message(credentials.CHAT_ID, telegram_message, parse_mode="HTML")
+                
             # Wait for the trade to close (at the close of the second red candle)
             while True:
                 new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
