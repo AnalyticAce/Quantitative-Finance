@@ -155,13 +155,28 @@ def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
         time.sleep(sleep_duration)
 
 if __name__ == "__main__":
-
     symbol = "Boom 1000 Index"
     timeframe = mt5.TIMEFRAME_M1
 
     lot_size = 0.2
 
+    initial_capital = 10.0
+    account_info = mt5.account_info()
+    current_balance = account_info.balance
+
     data_length = 1000
     period = 14
 
-    run_strategy(symbol, timeframe, lot_size, data_length, period)
+    if len(argv) > 1 and argv[1] == "--telegram":
+        telegram_enabled = True
+    else:
+        telegram_enabled = False
+
+    if len(argv) > 1 and argv[1] == "--help":
+        printer.help()
+
+    if len(argv) > 1 and argv[1] == "--run":
+        printer.print_ascii_art()
+        run_strategy(symbol, timeframe, lot_size, data_length, period)
+    else:
+        printer.help()
