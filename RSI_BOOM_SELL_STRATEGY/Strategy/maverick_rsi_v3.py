@@ -101,6 +101,7 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
         mt5.shutdown()
 
         if result.comment == "Accepted":
+            
             account_info = mt5.account_info()
             current_balance = account_info.balance
 
@@ -126,6 +127,7 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
                 
             # Wait for the trade to close (at the close of the second red candle)
             while True:
+                
                 new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
                 if new_bar is not None:
                     if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
@@ -170,16 +172,22 @@ if __name__ == "__main__":
 
     # Check command-line arguments
     if len(argv) > 1:
+        
         if argv[1] == "--telegram":
             telegram_enabled = True
+            
         elif argv[1] == "--help":
             printer.help()
+            
         elif argv[1] == "--telecmd":
             printer.command_t()
+            
         elif argv[1] == "--run":
             printer.print_ascii_art()
             run_strategy(symbol, timeframe, lot_size, data_length, period)
+            
         else:
             printer.help()
+            
     else:
         printer.help()
