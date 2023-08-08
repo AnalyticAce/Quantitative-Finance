@@ -101,9 +101,7 @@ The `Strategy` directory is the core of the Maverick RSI Strategy:
 
 ## Backtest ✅
 
-The `Backtest` directory contains the latest version of the `backtest.ipynb` Jupyter notebook, which performs backtesting on the Maverick RSI Strategy using historical price data stored in the `historical_data.csv` file. The notebook uses the `
-
-maverick_rsi_v3.py` script to execute the strategy and evaluates its performance based on the historical data. The results are displayed in the form of images, including a performance chart, a profit chart, and a history of trades.
+The `Backtest` directory contains the latest version of the `backtest.ipynb` Jupyter notebook, which performs backtesting on the Maverick RSI Strategy using historical price data stored in the `historical_data.csv` file. The notebook uses the `maverick_rsi_v3.py` script to execute the strategy and evaluates its performance based on the historical data. The results are displayed in the form of images, including a performance chart, a profit chart, and a history of trades.
 
 ### Backtest Results 🔮
 
@@ -122,9 +120,14 @@ To receive Telegram messages when a trade is taken, run the following command:
 ./Strategy/maverick_rsi_v3.py --telegram
 ```
 
+To receive extra informations in your Telegram bot, run the following command:
+```python
+./Strategy/maverick_rsi_v3.py --telecmd
+```
+
 To set up the Telegram bot, follow these steps:
 
-1. Search for the "BotFather" bot in the Telegram app.
+1. Search for the `BotFather` bot in the Telegram app.
 2. Start a chat with the BotFather and use the command "/newbot" to create a new bot.
 3. Follow the instructions to choose a name and username for your bot.
 4. Once the bot is created, the BotFather will provide you with a token. Copy this token; you will need it later.
