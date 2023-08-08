@@ -143,7 +143,43 @@ class credentials:
 ```
 
 Replace `"YOUR_TELEGRAM_API_KEY"` with the token you obtained from the BotFather, and `"YOUR_CHAT_ID"` (To find `"YOUR_CHAT_ID"` search for the "userinfobot" bot in the Telegram app and get the necessary information using "/start") with your Telegram Chat ID.
-7. Save the changes to the `secret.py` file.
+
+To get your chat ID using the `@userinfobot` on Telegram, follow these steps:
+
+- Open the Telegram app and search for `@userinfobot`.
+- Start a chat with `@userinfobot`.
+- Send any message to the bot.
+- To retrieve your chat ID, you need to use a method to get the information. You can use the `/start` command followed by your message. For example, send:
+
+   ```
+   /start
+   ```
+
+- The bot will reply with a message that includes your chat ID. It will look something like this:
+
+   ```
+   @yourusername
+   ———————
+   User ID: 123456789
+   First name: John
+   Last name: Doe
+   Username: johndoe
+   Language: en
+   ```
+
+- Note the `User ID`, which is your chat ID. In this example, `123456789` is the chat ID.
+
+Once you have your chat ID, you can use it in your Python code to set the `CHAT_ID` value in the `credentials` class:
+
+```python
+class credentials:
+    YOUR_TELEGRAM_TOKEN = "YOUR_TELEGRAM_API_KEY"
+    CHAT_ID = "123456789"  # Replace with your actual chat ID
+```
+
+Replace `"123456789"` with the actual chat ID you obtained from `@userinfobot`.
+
+- Save the changes to the `secret.py` file.
 
 After setting up the Telegram bot and updating the `secret.py` file with your API key and Chat ID, you can run the Maverick RSI Strategy with Telegram notifications as explained in the "Usage" section.
 
