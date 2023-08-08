@@ -6,7 +6,7 @@ import time
 from Strategy.tools.print_utils import printer, print_status
 import telebot
 from sys import *
-from secret import credentials # to be created and added manually in th current directory
+from secret import credentials # add manually you API info
 
 telegram_token = credentials.YOUR_TELEGRAM_TOKEN
 
