@@ -23,7 +23,7 @@ def get_historical_data(symbol, timeframe, number_of_data=1000):
     rates = mt5.copy_rates_from_pos(symbol, timeframe, 0, number_of_data)
 
     if rates is None:
-        print("Failed to retrieve historical data. ☢️")
+        print_status("Failed to retrieve historical data. ☢️", color = "red")
         mt5.shutdown()
         return None
 
