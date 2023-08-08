@@ -89,7 +89,7 @@ The `Source` directory contains auxiliary files used in the project:
 
 ## Disclaimer ☣️☣️☣️
 
-***DISCLAIMER: This project is for educational and informational purposes only and does not constitute financial advice. Trading and investing in financial markets involves substantial risk and is not suitable for everyone. The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project. You should carefully consider your financial situation and consult with a qualified professional before making any investment decisions.***
+***This project is for educational and informational purposes only and does not constitute financial advice. Trading and investing in financial markets involves substantial risk and is not suitable for everyone. The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project. You should carefully consider your financial situation and consult with a qualified professional before making any investment decisions.***
 
 ## Strategy 💸
 
@@ -108,8 +108,8 @@ The `Backtest` directory contains the latest version of the `backtest.ipynb` Jup
 #### History of trades on the last candles
 ![histo](Source/image/trades.png)
 
-### Disclaimer ☣️☣
-***DISCLAIMER: The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project.***
+### Disclaimer ☣️
+***The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project.***
 
 #### History of trades on the last 1000 candles
 ![Chart](Source/image/newplot.png)
