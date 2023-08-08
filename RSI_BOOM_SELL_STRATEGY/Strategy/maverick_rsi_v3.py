@@ -168,19 +168,18 @@ if __name__ == "__main__":
     data_length = 1000
     period = 14
 
-    if len(argv) > 1 and argv[1] == "--telegram":
-        telegram_enabled = True
-    else:
-        telegram_enabled = False
-
-    if len(argv) > 1 and argv[1] == "--help":
-        printer.help()
-
-    if len(argv) > 1 and argv[1] == "--telcmd":
-        printer.command_t()
-        
-    if len(argv) > 1 and argv[1] == "--run":
-        printer.print_ascii_art()
-        run_strategy(symbol, timeframe, lot_size, data_length, period)
+    # Check command-line arguments
+    if len(argv) > 1:
+        if argv[1] == "--telegram":
+            telegram_enabled = True
+        elif argv[1] == "--help":
+            printer.help()
+        elif argv[1] == "--telecmd":
+            printer.command_t()
+        elif argv[1] == "--run":
+            printer.print_ascii_art()
+            run_strategy(symbol, timeframe, lot_size, data_length, period)
+        else:
+            printer.help()
     else:
         printer.help()
