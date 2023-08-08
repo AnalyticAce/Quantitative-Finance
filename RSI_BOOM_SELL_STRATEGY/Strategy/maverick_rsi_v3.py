@@ -41,7 +41,7 @@ def calculate_rsi(df, period=14):
         rsi_indicator = momentum.RSIIndicator(df["close"], window=period)
         df["rsi"] = rsi_indicator.rsi()
     except Exception as e:
-        print(f"Error calculating RSI: {e}")
+        print_status(f"Error calculating RSI: {e}", color = "red")
 
 def find_filling_mode(symbol):
 
