@@ -176,6 +176,9 @@ if __name__ == "__main__":
     if len(argv) > 1 and argv[1] == "--help":
         printer.help()
 
+    if len(argv) > 1 and argv[1] == "--telcmd":
+        printer.command_t()
+        
     if len(argv) > 1 and argv[1] == "--run":
         printer.print_ascii_art()
         run_strategy(symbol, timeframe, lot_size, data_length, period)
