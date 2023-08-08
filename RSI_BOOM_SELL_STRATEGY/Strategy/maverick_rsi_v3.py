@@ -110,8 +110,7 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
                     f'<b>ROI since Initial Capital:</b> {roi_color}<b>{roi_percentage:.2f}%</b>\n\n'
                 )
                 bot.send_message(credentials.CHAT_ID, telegram_message, parse_mode="HTML")
-                
-            # Wait for the trade to close (at the close of the second red candle)
+
             while True:
                 new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
                 if new_bar is not None:
@@ -153,7 +152,6 @@ if __name__ == "__main__":
 
     telegram_enabled = False
     
-    # Check command-line arguments
     if len(argv) > 1:
         if argv[1] == "--telegram":
             telegram_enabled = True
