@@ -17,7 +17,7 @@ class printer:
     def help():
         command = " python3 maverick_v3.py run"
         command_ = "python3 maverick_v3.py --telegram"
-        command_t = "python3 maverick_v3.py --telcmd" # to be added as arg (Upcomming)
+        command_t = "python3 maverick_v3.py --telecmd" # to be added as arg (Upcomming)
         
         message = (
             "Hey 🫠 Welcome to Mavery RSI Version 3.0.1\n"
