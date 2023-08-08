@@ -5,7 +5,13 @@ from datetime import datetime
 import time
 from Strategy.tools.print_utils import printer, print_status
 import telebot
+#from secret import credentials # to be created and added manually in th current directory
+
 # Refer to ../Source/Obselete/maverick_v3 to add printing telegram feature
+
+telegram_token = credentials.YOUR_TELEGRAM_TOKEN
+
+bot = telebot.TeleBot(telegram_token)
 
 def get_historical_data(symbol, timeframe, number_of_data=1000):
 
