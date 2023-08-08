@@ -5,6 +5,7 @@ from datetime import datetime
 import time
 from Strategy.tools.print_utils import printer, print_status
 import telebot
+from sys import *
 from secret import credentials # to be created and added manually in th current directory
 
 # Refer to ../Source/Obselete/maverick_v3 to add printing telegram feature
