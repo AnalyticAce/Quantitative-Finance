@@ -16,7 +16,7 @@ bot = telebot.TeleBot(telegram_token)
 def get_historical_data(symbol, timeframe, number_of_data=1000):
 
     if not mt5.initialize():
-        print("initialize() failed ☢️")
+        print_status("initialize() failed ☢️", color = "red")
         mt5.shutdown()
         return None
 
