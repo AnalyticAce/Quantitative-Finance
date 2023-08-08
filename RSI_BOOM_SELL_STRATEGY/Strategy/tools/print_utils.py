@@ -42,6 +42,12 @@ class printer:
             "                                     \n"
             "                                     \n"
             "Usage : \n"
+            "In your Telegram chat with the bot, you can use the commands to get the desired information. For example:"
+            "                                     \n"
+            "- /total_trades\n"
+            "- /profit_for_date 2023-08-01\n"
+            "- /profit_for_period 2023-08-01 2023-08-15\n"
+            "                                     \n"
             "If you have any other questions or need further assistance, feel free to ask! Happy trading! 📈 \n"
         )
 
