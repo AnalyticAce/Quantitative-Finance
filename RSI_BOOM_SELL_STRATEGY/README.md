@@ -108,6 +108,9 @@ The `Backtest` directory contains the latest version of the `backtest.ipynb` Jup
 #### History of trades on the last candles
 ![histo](Source/image/trades.png)
 
+### Disclaimer ☣️☣
+***DISCLAIMER: The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project.***
+
 #### History of trades on the last 1000 candles
 ![Chart](Source/image/newplot.png)
 
@@ -115,14 +118,13 @@ The `Backtest` directory contains the latest version of the `backtest.ipynb` Jup
 ## Telegram Signal and Help 🧑🏿‍💻
 
 To receive Telegram messages when a trade is taken, run the following command:
-
 ```python
-./Strategy/maverick_rsi_v3.py --telegram
+python3 /Strategy/maverick_rsi_v3.py --telegram
 ```
 
 To receive extra informations in your Telegram bot, run the following command:
 ```python
-./Strategy/maverick_rsi_v3.py --telecmd
+python3 /Strategy/maverick_rsi_v3.py --telecmd
 ```
 
 To set up the Telegram bot, follow these steps:
@@ -148,7 +150,7 @@ After setting up the Telegram bot and updating the `secret.py` file with your AP
 To get help and see available commands, run:
 
 ```python
-./Strategy/maverick_rsi_v3.py --help
+python3 /Strategy/maverick_rsi_v3.py --help
 ```
 
 ### Telegram Bot Result (Example) 🤖
@@ -176,7 +178,7 @@ pip install -r Source/text/requirements.txt
 Now that you have followed the steps above and set up the necessary dependencies, let's run the program:
 
 ```python
-./Strategy/maverick_rsi_v3.py --run
+python3 /Strategy/maverick_rsi_v3.py --run
 ```
 
 ## Other Requirements 📌📌
