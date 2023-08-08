@@ -179,7 +179,7 @@ class credentials:
 
 Replace `"123456789"` with the actual chat ID you obtained from `@userinfobot`.
 
-- Save the changes to the `secret.py` file.
+7. Save the changes to the `secret.py` file.
 
 After setting up the Telegram bot and updating the `secret.py` file with your API key and Chat ID, you can run the Maverick RSI Strategy with Telegram notifications as explained in the "Usage" section.
 
