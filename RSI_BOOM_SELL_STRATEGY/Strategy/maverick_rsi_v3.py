@@ -108,9 +108,9 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
                     if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
                         break
                     time.sleep(1)
-            print("Trade closed")
+            printer.print_trade_closed()
         else:
-            print("Error executing the trade")
+            print_status(f"Error executing the trade", color="red")
 
 
 def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
