@@ -60,7 +60,7 @@ def find_filling_mode(symbol):
         result = mt5.order_check(request)
 
         if result.comment == "Done":
-            print("Trade was closed")
+            printer.print_trade_closed()
             break
 
     return i
