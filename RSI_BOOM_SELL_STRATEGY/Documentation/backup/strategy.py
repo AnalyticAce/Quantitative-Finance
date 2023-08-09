@@ -168,9 +168,9 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             
             # Wait for the trade to close (at the close of the same red candle)
             while True:
-                new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
+                new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 2)  # Fetch two new bars
                 if new_bar is not None:
-                    if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
+                    if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"] and new_bar.iloc[1]["close"] < new_bar.iloc[1]["open"]:
                         break
                     time.sleep(1)
             print("Trade closed")
