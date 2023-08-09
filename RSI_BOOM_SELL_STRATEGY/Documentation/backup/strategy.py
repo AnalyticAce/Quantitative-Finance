@@ -151,7 +151,7 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             "volume": lot_size,
             "type": mt5.ORDER_TYPE_SELL,
             "price": mt5.symbol_info_tick(symbol).bid,
-            "deviation": 10,
+            "deviation": 0,
             "magic": 0,
             "comment": "RSI Sell Strategy",
             "type_filling": find_filling_mode(symbol),
@@ -217,6 +217,6 @@ if __name__ == "__main__":
     lot_size = 0.5
 
     data_length = 1000
-    period = 14
+    period = 7
 
     run_strategy(symbol, timeframe, lot_size, data_length, period)
