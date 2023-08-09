@@ -171,15 +171,11 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
                 new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
                 if new_bar is not None:
                     if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
-                        exit_price = new_bar.iloc[0]["close"]  # Exit at the close price of the same red candle
                         break
                     time.sleep(1)
-            
-            # Print the exit price
-            print(f"Trade closed at exit price: {exit_price}")
+            print("Trade closed")
         else:
             print("Error executing the trade")
-
 
 def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
     
