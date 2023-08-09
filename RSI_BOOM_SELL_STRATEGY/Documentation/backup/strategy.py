@@ -91,7 +91,6 @@ def find_filling_mode(symbol):
     return i
 
 def execute_sell_trade(df, symbol, lot_size=0.2):
-
     """
     Executes the RSI sell trade based on the given strategy conditions.
 
@@ -129,7 +128,6 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
         implemented to mitigate potential losses.
 
     """
-    
     current_bar = df.iloc[-1]
     previous_bar = df.iloc[-2]
     confirmation_bar = df.iloc[-3]
@@ -144,13 +142,16 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             mt5.shutdown()
             return
 
-        # Execute the trade on the next red candle (Candle 3 in the description)
+        # Store the open price of the next red candle (Candle 3 in the description)
+        entry_price = mt5.symbol_info_tick(symbol).open
+
+        # Execute the trade on the next red candle (Candle 3)
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": symbol,
             "volume": lot_size,
             "type": mt5.ORDER_TYPE_SELL,
-            "price": mt5.symbol_info_tick(symbol).bid,
+            "price": entry_price,
             "deviation": 0,
             "magic": 0,
             "comment": "RSI Sell Strategy",
@@ -164,14 +165,18 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
 
         if result.comment == "Accepted":
             print("Sell executed")
-            # Wait for the trade to close (at the close of the second red candle)
+            
+            # Wait for the trade to close (at the close of the same red candle)
             while True:
                 new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
                 if new_bar is not None:
                     if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
+                        exit_price = new_bar.iloc[0]["close"]  # Exit at the close price of the same red candle
                         break
                     time.sleep(1)
-            print("Trade closed")
+            
+            # Print the exit price
+            print(f"Trade closed at exit price: {exit_price}")
         else:
             print("Error executing the trade")
 
