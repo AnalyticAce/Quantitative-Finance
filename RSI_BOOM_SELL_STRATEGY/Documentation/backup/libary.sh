@@ -4,8 +4,6 @@ packages=(
     "MetaTrader5"
     "pandas"
     "ta"
-    "telebot"
-    "plotly"
 )
 
 for package in "${packages[@]}"; do
