@@ -176,6 +176,19 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
             print("Trade closed")
         else:
             print("Error executing the trade")
+        
+        #if result.comment == "Accepted":
+         #   print("Sell executed")
+            
+            # Calculate the closing time for the trade (1 minute after the trade was executed)
+          #  closing_time = datetime.datetime.now() + datetime.timedelta(minutes=1)
+            
+            # Wait until the specified closing time
+          #  while datetime.datetime.now() < closing_time:
+           #     time.sleep(1)
+           # print("Trade closed after 1 minute")
+        # else:
+        #    print("Error executing the trade")
 
 def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period = 14):
     
