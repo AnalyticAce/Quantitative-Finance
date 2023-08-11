@@ -4,7 +4,7 @@ import ta.momentum as momentum
 from datetime import datetime
 import time
 
-def get_historical_data(symbol, timeframe, number_of_data=1000):
+def get_historical_data(symbol, timeframe, number_of_data = 1000):
     
     """
     Fetches historical OHLCV (Open, High, Low, Close, Volume) data for a specific trading symbol.
@@ -39,7 +39,7 @@ def get_historical_data(symbol, timeframe, number_of_data=1000):
 
     return df
 
-def calculate_rsi(df, period=14):
+def calculate_rsi(df, period = 14):
 
     """
     Calculates the Relative Strength Index (RSI) for a given DataFrame.
@@ -90,7 +90,7 @@ def find_filling_mode(symbol):
 
     return i
 
-def execute_sell_trade(df, symbol, lot_size=0.2):
+def execute_sell_trade(df, symbol, lot_size = 0.2):
     """
     Executes the RSI sell trade based on the given strategy conditions.
 
@@ -177,7 +177,7 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
         else:
             print("Error executing the trade")
 
-def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
+def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period = 14):
     
     """
     Runs the RSI sell strategy on historical data for the specified symbol.
