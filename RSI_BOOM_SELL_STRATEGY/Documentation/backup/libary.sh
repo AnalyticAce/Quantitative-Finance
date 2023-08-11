@@ -7,7 +7,6 @@ packages=(
     "termcolor==1.1.0"
     "playsound"
     "telebot"
-    "pyTelegramBotAPI"
     "datetime"
     "plotly"
 )
