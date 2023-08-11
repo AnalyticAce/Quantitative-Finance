@@ -181,7 +181,7 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
          #   print("Sell executed")
             
             # Calculate the closing time for the trade (1 minute after the trade was executed)
-          #  closing_time = datetime.datetime.now() + datetime.timedelta(minutes=1)
+          #  closing_time = datetime.datetime.now() + datetime.timedelta(seconds=59)
             
             # Wait until the specified closing time
           #  while datetime.datetime.now() < closing_time:
