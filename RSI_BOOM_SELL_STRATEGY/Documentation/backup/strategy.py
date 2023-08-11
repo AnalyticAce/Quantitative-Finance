@@ -162,7 +162,7 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
         result = mt5.order_send(request)
 
         mt5.shutdown()
-
+        """
         if result.comment == "Accepted":
             print("Sell executed")
             
@@ -176,19 +176,18 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
             print("Trade closed")
         else:
             print("Error executing the trade")
+        """
+
+        if result.comment == "Accepted":
+            print("Sell executed")
         
-        #if result.comment == "Accepted":
-         #   print("Sell executed")
+            closing_time = datetime.datetime.now() + datetime.timedelta(seconds=59)
             
-            # Calculate the closing time for the trade (1 minute after the trade was executed)
-          #  closing_time = datetime.datetime.now() + datetime.timedelta(seconds=59)
-            
-            # Wait until the specified closing time
-          #  while datetime.datetime.now() < closing_time:
-           #     time.sleep(1)
-           # print("Trade closed after 1 minute")
-        # else:
-        #    print("Error executing the trade")
+            while datetime.datetime.now() < closing_time:
+                time.sleep(1)
+            print("Trade closed")
+        else:
+            print("Error executing the trade")
 
 def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period = 14):
     
@@ -228,9 +227,9 @@ if __name__ == "__main__":
     symbol = "Boom 1000 Index"
     timeframe = mt5.TIMEFRAME_M1
 
-    lot_size = 0.5
+    lot_size = 1.0
 
     data_length = 1000
-    period = 7
+    period = 3.5
 
     run_strategy(symbol, timeframe, lot_size, data_length, period)
