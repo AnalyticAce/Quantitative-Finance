@@ -1,11 +1,9 @@
 #!/bin/bash
 
 packages=(
-    "MetaTrader5==5.0.40"
-    "pandas==1.3.3"
-    "ta==0.7.0"
-    "termcolor==1.1.0"
-    "playsound"
+    "MetaTrader5"
+    "pandas"
+    "ta"
     "telebot"
     "plotly"
 )
