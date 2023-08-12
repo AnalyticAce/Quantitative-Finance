@@ -92,9 +92,9 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
 
         if result.comment == "Accepted":
             print("Sell executed")
-        
-            closing_time = datetime.datetime.now() + datetime.timedelta(seconds=59)
+            
             now = datetime.datetime.now()
+            closing_time = now + datetime.timedelta(seconds=59)
 
             while now < closing_time:
                 time.sleep(1)
