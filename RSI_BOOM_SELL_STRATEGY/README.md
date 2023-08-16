@@ -108,12 +108,12 @@ The `Backtest` directory contains the latest version of the `backtest.ipynb` Jup
 #### History of trades
 ![histo](Source/image/newtrades.png)
 
+#### Winning and Losing trades
+![Chart](Source/image/frequency.png)
+![Chart](Source/image/win_loss.png)
+
 ### Disclaimer ☣️
 ***The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project.***
-
-#### History of trades on the last 1000 candles
-![Chart](Source/image/newplot.png)
-
 
 ## Telegram Signal and Help 🧑🏿‍💻
 
