@@ -113,6 +113,7 @@ The `Backtest` directory contains the latest version of the `backtest.ipynb` Jup
 
 #### Winning and Losing trades
 ![Chart](Source/image/frequency.png)
+
 ![histo_1](Source/image/win_loss.png)
 
 ### Disclaimer ☣️
