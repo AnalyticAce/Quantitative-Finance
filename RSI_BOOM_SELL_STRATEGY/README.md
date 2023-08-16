@@ -105,12 +105,15 @@ The `Backtest` directory contains the latest version of the `backtest.ipynb` Jup
 
 ### Backtest Results 🔮
 
-#### History of trades
+#### History of trades 1
+![histo](Source/image/trades.png)
+
+#### History of trades 2
 ![histo](Source/image/newtrades.png)
 
 #### Winning and Losing trades
 ![Chart](Source/image/frequency.png)
-![Chart](Source/image/win_loss.png)
+![histo_1](Source/image/win_loss.png)
 
 ### Disclaimer ☣️
 ***The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project.***
