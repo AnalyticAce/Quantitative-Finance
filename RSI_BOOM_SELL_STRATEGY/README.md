@@ -105,8 +105,8 @@ The `Backtest` directory contains the latest version of the `backtest.ipynb` Jup
 
 ### Backtest Results 🔮
 
-#### History of trades on the last candles
-![histo](Source/image/trades.png)
+#### History of trades
+![histo](Source/image/newtrades.png)
 
 ### Disclaimer ☣️
 ***The information provided in this project is based on historical data, and past performance is not indicative of future results. The authors and contributors of this project are not financial advisors and shall not be held responsible for any financial losses or damages resulting from the use of this project.***
