@@ -103,8 +103,10 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
         else:
             print("Error executing the trade")
 
-def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period = 14):
+def run_strategy(timeframe, lot_size = 0.2, data_length = 1000, period = 14):
 
+    symbol = mt5.symbol_info(mt5.Symbol()).name
+    
     while True:
 
         try:
@@ -123,13 +125,9 @@ def run_strategy(symbol, timeframe, lot_size = 0.2, data_length = 1000, period =
         time.sleep(sleep_duration)
 
 if __name__ == "__main__":
-
-    symbol = "Boom 1000 Index"
     timeframe = mt5.TIMEFRAME_M1
-
     lot_size = 1.0
-
     data_length = 1000
     period = 7
 
-    run_strategy(symbol, timeframe, lot_size, data_length, period)
+    run_strategy(timeframe, lot_size, data_length, period)
