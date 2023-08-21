@@ -4,6 +4,8 @@ import ta.momentum as momentum
 from datetime import datetime
 import time
 
+#send buy request when condiction is
+
 def get_historical_data(symbol, timeframe, number_of_data=1000):
 
     if not mt5.initialize():
