@@ -4,7 +4,7 @@ import ta.momentum as momentum
 from datetime import datetime, timedelta
 import time
 
-def get_historical_data(symbol, timeframe, number_of_data = 1000):
+def get_historical_data(symbol, timeframe, number_of_data):
     
     if not mt5.initialize():
         print("initialize() failed ☢️")
@@ -26,7 +26,7 @@ def get_historical_data(symbol, timeframe, number_of_data = 1000):
 
     return df
 
-def calculate_rsi(df, period = 14):
+def calculate_rsi(df, period):
 
     try:
         rsi_indicator = momentum.RSIIndicator(df["close"], window=period)
@@ -56,7 +56,7 @@ def find_filling_mode(symbol):
 
     return i
 
-def execute_buy_trade(df, symbol, lot_size = 0.2):
+def execute_buy_trade(df, symbol, lot_size):
 
     current_bar = df.iloc[i]
     previous_bar = df.iloc[i - 1]
@@ -103,7 +103,7 @@ def execute_buy_trade(df, symbol, lot_size = 0.2):
         else:
             print("Error executing the trade")
 
-def run_strategy(timeframe, lot_size = 0.2, data_length = 1000, period = 14):
+def run_strategy(timeframe, lot_size, data_length, period):
 
     symbol = mt5.symbol_info(mt5.Symbol()).name
     
