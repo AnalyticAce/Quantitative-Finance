@@ -93,13 +93,12 @@ def execute_sell_trade(df, symbol, lot_size):
         if result.comment == "Accepted":
             print("Sell executed")
             # Wait for the trade to close (at the close of the second red candle)
-            trade_closed = False
-            while not trade_closed:
+            #trade_closed = False
+            while True:
                 new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
                 if new_bar is not None:
                     if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
-                        trade_closed = True
-                time.sleep(1)
+                        break
             print("Trade closed")
         else:
             print("Error closing the trade")
