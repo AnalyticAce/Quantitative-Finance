@@ -66,7 +66,7 @@ def close_trade_after_duration(symbol, duration):
             print("initialize() failed ☢️")
             mt5.shutdown()
             return
-        
+        duration = 60
         # Close the trade (you should implement the logic to close the trade here)
         # For demonstration purposes, let's print a message.
         print("Trade closed after", duration, "seconds")
