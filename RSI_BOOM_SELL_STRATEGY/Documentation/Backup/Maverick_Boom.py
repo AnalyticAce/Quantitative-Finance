@@ -99,10 +99,10 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
                 if new_bar is not None:
                     if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
                     trade_closed = True
-                    time.sleep(1)
+                time.sleep(1)
             print("Trade closed")
         else:
-            print("Error executing the trade")
+            print("Error closing the trade")
 
 def run_strategy(timeframe, lot_size = 0.2, data_length = 1000, period = 14):
 
