@@ -128,7 +128,7 @@ def run_strategy(timeframe, lot_size = 0.2, data_length = 1000, period = 14):
 if __name__ == "__main__":
     timeframe = mt5.TIMEFRAME_M1
     lot_size = 1.0
-    data_length = 1000
+    data_length = 500
     period = 7
 
     run_strategy(timeframe, lot_size, data_length, period)
