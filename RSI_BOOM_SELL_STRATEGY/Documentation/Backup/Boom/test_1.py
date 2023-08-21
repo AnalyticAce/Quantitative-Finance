@@ -36,6 +36,28 @@ def calculate_rsi(df, period=14):
     except Exception as e:
         print(f"Error calculating RSI: {e}")
 
+def find_filling_mode(symbol):
+
+    for i in range(2):
+
+        request = {
+            "action": mt5.TRADE_ACTION_DEAL,
+            "symbol": symbol,
+            "volume": mt5.symbol_info(symbol).volume_min,
+            "type": mt5.ORDER_TYPE_BUY,
+            "price": mt5.symbol_info_tick(symbol).ask,
+            "type_filling": i,
+            "type_time": mt5.ORDER_TIME_GTC
+        }
+
+        result = mt5.order_check(request)
+
+        if result.comment == "Done":
+            print("Trade was closed")
+            break
+
+    return i
+
 def execute_sell_trade(df, symbol, lot_size=0.2):
 
     current_bar = df.iloc[-1]
@@ -60,9 +82,9 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             "type": mt5.ORDER_TYPE_SELL,
             "price": mt5.symbol_info_tick(symbol).bid,
             "deviation": 0,
-            "magic": 0,
+            "magic": 1010,
             "comment": "RSI Sell Strategy",
-            "type_filling": mt5.ORDER_FILLING_IOC,
+            "type_filling": find_filling_mode(symbol),
             "type_time": mt5.ORDER_TIME_GTC
         }
 
@@ -76,8 +98,8 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             
             new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
             
-            #if new_bar is not None and new_bar.iloc[0]["open"] < new_bar.iloc[0]["close"]:
-            if new_bar is not None and new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
+            if new_bar is not None and new_bar.iloc[0]["open"] < new_bar.iloc[0]["close"]:
+            #if new_bar is not None and new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
                 close_price = mt5.symbol_info_tick(symbol).ask
         
                 request_close = {
@@ -89,7 +111,7 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
                     "deviation": 0,
                     "magic": 0,
                     "comment": "Close Trade",
-                    "type_filling": mt5.ORDER_FILLING_IOC,
+                    "type_filling": find_filling_mode(symbol),
                     "type_time": mt5.ORDER_TIME_GTC
                 }
                 
