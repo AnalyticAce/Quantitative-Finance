@@ -98,7 +98,7 @@ def execute_sell_trade(df, symbol, lot_size = 0.2):
                 new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
                 if new_bar is not None:
                     if new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
-                    trade_closed = True
+                        trade_closed = True
                 time.sleep(1)
             print("Trade closed")
         else:
