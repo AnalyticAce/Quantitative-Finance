@@ -53,7 +53,7 @@ def find_filling_mode(symbol):
         result = mt5.order_check(request)
 
         if result.comment == "Done":
-            print("Trade was closed")
+            print("Trade is closed")
             break
 
     return i
@@ -82,16 +82,14 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             "type": mt5.ORDER_TYPE_SELL,
             "price": mt5.symbol_info_tick(symbol).bid,
             "deviation": 0,
-            "magic": 1010,
+            "magic": 0,
             "comment": "RSI Sell Strategy",
             "type_filling": find_filling_mode(symbol),
             "type_time": mt5.ORDER_TIME_GTC
         }
 
         result = mt5.order_send(request)
-
-        mt5.shutdown()
-
+        
         if result.comment == "Accepted": 
             print("Sell executed") 
             time.sleep(60)
@@ -99,7 +97,6 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             new_bar = get_historical_data(symbol, mt5.TIMEFRAME_M1, 1)
             
             if new_bar is not None and new_bar.iloc[0]["open"] < new_bar.iloc[0]["close"]:
-            #if new_bar is not None and new_bar.iloc[0]["close"] < new_bar.iloc[0]["open"]:
                 close_price = mt5.symbol_info_tick(symbol).ask
         
                 request_close = {
@@ -118,14 +115,15 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
                 result_close = mt5.order_send(request_close)
                 
                 if result_close.comment == "Accepted":
-                    print("Trade closed at open of the next candle")
+                    print("Trade closing")
                 else:
                     print("Error closing the trade")
             else:
                 print("No trade closure condition met (next candle is not bullish)")
         else:
             print("Error executing the trade")
-
+            
+        mt5.shutdown()
 
 def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
 
