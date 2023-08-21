@@ -56,7 +56,7 @@ def find_filling_mode(symbol):
 
     return i
 
-def execute_sell_trade(df, symbol, lot_size = 0.2):
+def execute_buy_trade(df, symbol, lot_size = 0.2):
 
     current_bar = df.iloc[i]
     previous_bar = df.iloc[i - 1]
@@ -115,7 +115,7 @@ def run_strategy(timeframe, lot_size = 0.2, data_length = 1000, period = 14):
             if df is not None:
                 calculate_rsi(df, period)
 
-                execute_sell_trade(df, symbol, lot_size)
+                execute_buy_trade(df, symbol, lot_size)
 
         except Exception as e:
             print(f"Error executing the strategy: {e}")
