@@ -5,7 +5,7 @@ import time
 
 #close trade 59 sec later
 
-def get_historical_data(symbol, timeframe, number_of_data=1000):
+def get_historical_data(symbol, timeframe, number_of_data):
     if not mt5.initialize():
         print("initialize() failed ☢️")
         mt5.shutdown()
@@ -26,7 +26,7 @@ def get_historical_data(symbol, timeframe, number_of_data=1000):
 
     return df
 
-def calculate_rsi(df, period=14):
+def calculate_rsi(df, period):
     try:
         rsi_indicator = momentum.RSIIndicator(df["close"], window=period)
         df["rsi"] = rsi_indicator.rsi()
@@ -50,7 +50,7 @@ def find_filling_mode(symbol):
             break
     return i
 
-def execute_sell_trade(df, symbol, lot_size=0.2):
+def execute_sell_trade(df, symbol, lot_size):
     current_bar = df.iloc[-1]
     previous_bar = df.iloc[-2]
     confirmation_bar = df.iloc[-3]
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     symbol = "Boom 1000 Index"
     timeframe = mt5.TIMEFRAME_M1
 
-    lot_size = 0.2
+    lot_size = 1.0
 
     data_length = 500
     period = 7
