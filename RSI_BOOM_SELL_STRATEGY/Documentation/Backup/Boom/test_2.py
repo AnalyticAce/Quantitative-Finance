@@ -60,10 +60,18 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             and previous_bar["close"] < previous_bar["open"] \
             and current_bar["close"] < current_bar["open"]:
 
+        print("We are inside the condition")
+        
+        print("initializing mt5")
+
         if not mt5.initialize():
             print("initialize() failed ☢️")
             mt5.shutdown()
             return
+
+        print("end of mt5 initialization")
+
+        print("This is before the request")
 
         # Execute the trade
         request = {
@@ -79,14 +87,27 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
             "type_time": mt5.ORDER_TIME_GTC
         }
 
-        result = mt5.order_send(request)
+        print("This is after the request")
 
-        if result.comment == "Accepted": 
+        result = mt5.order_send(request)
+        
+        print("This is after the request as been sent the request")
+
+        if result.comment == "Accepted":
+
+            print("We are inside the close condition")
+            
             print("Sell executed") 
+            
             time.sleep(59)  # Close the trade after 59 seconds
+
+            print("After sleep time")
 
             # Close the trade
             close_price = mt5.symbol_info_tick(symbol).ask
+            
+            print("This is before the close trade request")
+
             request_close = {
                 "action": mt5.TRADE_ACTION_DEAL,
                 "symbol": symbol,
@@ -99,7 +120,12 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
                 "type_filling": find_filling_mode(symbol),
                 "type_time": mt5.ORDER_TIME_GTC
             }
+
+            print("This is after the close trade request")
+
             result_close = mt5.order_send(request_close)
+
+            print("This is after the close trade request as been sent")
 
             if result_close.comment == "Accepted":
                 print("Trade closed after 59 seconds")
@@ -111,7 +137,8 @@ def execute_sell_trade(df, symbol, lot_size=0.2):
 
         mt5.shutdown()
 
-def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
+def run_strategy(symbol, timeframe, lot_size, data_length, period):
+    
     while True:
         try:
             df = get_historical_data(symbol, timeframe, data_length)
@@ -131,9 +158,9 @@ if __name__ == "__main__":
     symbol = "Boom 1000 Index"
     timeframe = mt5.TIMEFRAME_M1
 
-    lot_size = 1.0
+    lot_size = 0.2
 
-    data_length = 1000
+    data_length = 500
     period = 7
 
     run_strategy(symbol, timeframe, lot_size, data_length, period)
