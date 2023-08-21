@@ -1,11 +1,11 @@
 import MetaTrader5 as mt5
 import pandas as pd
 import ta.momentum as momentum
-from datetime import datetime, timedelta
 import time
 
-def get_historical_data(symbol, timeframe, number_of_data):
-    
+#close trade 59 sec later
+
+def get_historical_data(symbol, timeframe, number_of_data=1000):
     if not mt5.initialize():
         print("initialize() failed ☢️")
         mt5.shutdown()
@@ -26,8 +26,7 @@ def get_historical_data(symbol, timeframe, number_of_data):
 
     return df
 
-def calculate_rsi(df, period):
-
+def calculate_rsi(df, period=14):
     try:
         rsi_indicator = momentum.RSIIndicator(df["close"], window=period)
         df["rsi"] = rsi_indicator.rsi()
@@ -35,9 +34,7 @@ def calculate_rsi(df, period):
         print(f"Error calculating RSI: {e}")
 
 def find_filling_mode(symbol):
-
     for i in range(2):
-
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": symbol,
@@ -47,42 +44,18 @@ def find_filling_mode(symbol):
             "type_filling": i,
             "type_time": mt5.ORDER_TIME_GTC
         }
-
         result = mt5.order_check(request)
-
         if result.comment == "Done":
-            print("Trade was closed")
+            print("Trade is closed")
             break
-
     return i
 
-import threading
-
-def close_trade_after_duration(symbol, duration):
-    # Define a function to close the trade after the specified duration
-    def close_trade():
-        time.sleep(60)  # Wait for the specified duration
-        if not mt5.initialize():
-            print("initialize() failed ☢️")
-            mt5.shutdown()
-            return
-        duration = 60
-        # Close the trade (you should implement the logic to close the trade here)
-        # For demonstration purposes, let's print a message.
-        print("Trade closed after", duration, "seconds")
-        
-        mt5.shutdown()
-
-    # Create a new thread to handle the trade closure
-    close_thread = threading.Thread(target=close_trade)
-    close_thread.start()  # Start the thread
-
-def execute_sell_trade(df, symbol, lot_size, duration):
-
+def execute_sell_trade(df, symbol, lot_size=0.2):
     current_bar = df.iloc[-1]
     previous_bar = df.iloc[-2]
     confirmation_bar = df.iloc[-3]
 
+    # Check for sell conditions
     if current_bar["rsi"] > 70 and confirmation_bar["close"] > confirmation_bar["open"] \
             and previous_bar["close"] < previous_bar["open"] \
             and current_bar["close"] < current_bar["open"]:
@@ -92,43 +65,59 @@ def execute_sell_trade(df, symbol, lot_size, duration):
             mt5.shutdown()
             return
 
-        entry_price = mt5.symbol_info_tick(symbol).bid
-
+        # Execute the trade
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": symbol,
             "volume": lot_size,
             "type": mt5.ORDER_TYPE_SELL,
-            "price": entry_price,
+            "price": mt5.symbol_info_tick(symbol).bid,
             "deviation": 0,
             "magic": 0,
             "comment": "RSI Sell Strategy",
             "type_filling": find_filling_mode(symbol),
-            "type_time": mt5.ORDER_TIME_GTC,
+            "type_time": mt5.ORDER_TIME_GTC
         }
 
         result = mt5.order_send(request)
 
-        mt5.shutdown()
+        if result.comment == "Accepted": 
+            print("Sell executed") 
+            time.sleep(59)  # Close the trade after 59 seconds
 
-        if result.comment == "Accepted":
-            print("Sell executed")
-            # Close the trade after the specified duration
-            close_trade_after_duration(symbol, 60)
+            # Close the trade
+            close_price = mt5.symbol_info_tick(symbol).ask
+            request_close = {
+                "action": mt5.TRADE_ACTION_DEAL,
+                "symbol": symbol,
+                "volume": lot_size,
+                "type": mt5.ORDER_TYPE_BUY,
+                "price": close_price,
+                "deviation": 0,
+                "magic": 0,
+                "comment": "Close Trade",
+                "type_filling": find_filling_mode(symbol),
+                "type_time": mt5.ORDER_TIME_GTC
+            }
+            result_close = mt5.order_send(request_close)
+
+            if result_close.comment == "Accepted":
+                print("Trade closed after 59 seconds")
+            else:
+                print("Error closing the trade")
+            
         else:
             print("Error executing the trade")
 
+        mt5.shutdown()
 
-def run_strategy(symbol, timeframe, lot_size, data_length, period):
-    
+def run_strategy(symbol, timeframe, lot_size=0.2, data_length=1000, period=14):
     while True:
-
         try:
             df = get_historical_data(symbol, timeframe, data_length)
 
             if df is not None:
                 calculate_rsi(df, period)
-
                 execute_sell_trade(df, symbol, lot_size)
 
         except Exception as e:
@@ -141,8 +130,10 @@ def run_strategy(symbol, timeframe, lot_size, data_length, period):
 if __name__ == "__main__":
     symbol = "Boom 1000 Index"
     timeframe = mt5.TIMEFRAME_M1
+
     lot_size = 1.0
-    data_length = 500
+
+    data_length = 1000
     period = 7
 
     run_strategy(symbol, timeframe, lot_size, data_length, period)
