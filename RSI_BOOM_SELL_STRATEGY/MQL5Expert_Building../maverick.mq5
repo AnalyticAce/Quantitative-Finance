@@ -47,16 +47,18 @@ void OnTick() {
    CopyBuffer(RSIDef, 0, 0, 1, RSIArray);
    double RSIValue = NormalizeDouble(RSIArray[0], 2);
    
-   if (RSIValue > overboughtLevel) {
-        // Check candle conditions
-       bool condition1 = (close_1 < open_1); // Condition 1: Confirmation candle is green
-       bool condition2 = (close_2 > open_2); // Condition 2: Previous candle is red
-       bool condition3 = (close_3 < open_3);  // Condition 3: Current candle is red
-
-        // Check all conditions
-       if (condition1 && condition2 && condition3)
-       //trade.Sell(lotSize, _Symbol, dAsk_Price, close_3);
-       trade.Sell(lotSize);
+   if(PositionsTotal() == 0) {
+      
+      if (RSIValue > overboughtLevel) {
+           // Check candle conditions
+          bool condition1 = (close_1 < open_1); // Condition 1: Confirmation candle is green
+          bool condition2 = (close_2 > open_2); // Condition 2: Previous candle is red
+          bool condition3 = (close_3 < open_3);  // Condition 3: Current candle is red
+   
+           // Check all conditions
+          if (condition1 && condition2 && condition3)
+          //trade.Sell(lotSize, _Symbol, dAsk_Price, close_3);
+          trade.Sell(lotSize);
+      }   
    }
-
 }
