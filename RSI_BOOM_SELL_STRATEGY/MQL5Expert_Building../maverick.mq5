@@ -3,10 +3,18 @@
 
 // Define input parameters
 input double lotSize = 0.2; // Lot size for the sell trade
-input int rsiPeriod = 14;   // Period for RSI indicator
+input int rsiPeriod = 7;   // Period for RSI indicator
 input double overboughtLevel = 70; // RSI overbought level
 
 CTrade trade;
+
+int OnInit() {
+   return(INIT_SUCCEEDED);
+}
+
+void OnDeinit(const int reason)
+{
+}
 
 void OnTick() {
 
@@ -16,6 +24,20 @@ void OnTick() {
    double   close_2 = iClose(Symbol(),Period(),1);
    double   open_3  = iOpen(Symbol(),Period(),0);
    double   close_3 = iClose(Symbol(),Period(),0);
+   
+   // Info of the last tick.
+   // To be used for getting recent/latest price quotes
+   MqlTick Latest_Price; // Structure to get the latest prices      
+   SymbolInfoTick(Symbol() ,Latest_Price); // Assign current prices to structure 
+
+   // The BID price.
+   static double dBid_Price; 
+
+   // The ASK price.
+   static double dAsk_Price; 
+
+   dBid_Price = Latest_Price.bid;  // Current Bid price.
+   dAsk_Price = Latest_Price.ask;  // Current Ask price.
    
    double RSIArray[];
     
@@ -33,6 +55,8 @@ void OnTick() {
 
         // Check all conditions
        if (condition1 && condition2 && condition3)
-       Comment("Hello");
+       //trade.Sell(lotSize, _Symbol, dAsk_Price, close_3);
+       trade.Sell(lotSize);
    }
+
 }
