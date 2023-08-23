@@ -1,18 +1,3 @@
-// create a simple expert advisors that sell when RSI is above 70 and buy when RSI is below 30, close buy trade when rsi is 70 close sell trade when rsi is 30
-
-//+------------------------------------------------------------------+
-//|                                                                  |
-//|                  Simple RSI Expert Advisor                       |
-//|                                                                  |
-//+------------------------------------------------------------------+
-#property copyright "Copyright 2020, MetaQuotes Software Corp."
-#property link      "https://www.mql5.com"
-#property version   "1.00"
-#property strict
-
-//+------------------------------------------------------------------+
-//| Expert initialization function                                   |
-//+------------------------------------------------------------------+
 int OnInit()
 {
    //---
@@ -55,4 +40,3 @@ void OnTick()
       }
    }
 }
-//+------------------------------------------------------------------+
