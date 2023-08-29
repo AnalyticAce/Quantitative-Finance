@@ -17,7 +17,7 @@ void OnDeinit(const int reason)
 }
 
 void OnTick() {
-
+   // Info of the ticks OCHL.
    double   open_1  = iOpen(Symbol(),Period(),2);
    double   close_1 = iClose(Symbol(),Period(),2);
    double   open_2  = iOpen(Symbol(),Period(),1);
@@ -25,7 +25,7 @@ void OnTick() {
    double   open_3  = iOpen(Symbol(),Period(),0);
    double   close_3 = iClose(Symbol(),Period(),0);
    
-   // Info of the last tick.
+   
    // To be used for getting recent/latest price quotes
    MqlTick Latest_Price; // Structure to get the latest prices      
    SymbolInfoTick(Symbol() ,Latest_Price); // Assign current prices to structure 
