@@ -69,6 +69,40 @@ To get started with the Statistical Arbitrage Opportunity Visualizer, follow the
 
 5. **Run the Tool**: Launch the tool and start exploring arbitrage opportunities and analyzing data.
 
+## Key Features
+
+### 1. Z-Score Arbitrage
+
+- **Z-Score Calculation**: Calculate the Z-Score for pairs of related assets. The Z-Score measures how many standard deviations an asset's price is from the mean price ratio with respect to another asset.
+
+- **Arbitrage Signal Generation**: Automatically generate arbitrage signals based on the Z-Score exceeding predefined thresholds. Identify when the price relationship between two assets is statistically significant and offers an arbitrage opportunity.
+
+- **Pair Selection**: Allow users to select pairs of assets for Z-Score analysis, either manually or through automated screening based on user-defined criteria.
+
+- **Signal Visualization**: Display Z-Score charts and overlay trading signals on historical price charts for the selected asset pairs.
+
+### 2. Spread Strategy Manager
+
+- **Spread Trading Strategies**: Enable users to define and manage spread trading strategies. These can include pairs trading, cointegration-based trading, or other spread strategies tailored to user preferences.
+
+- **Strategy Customization**: Provide a user-friendly interface for creating, configuring, and optimizing spread trading strategies. Allow users to set parameters such as entry and exit conditions, position sizing, and risk management rules.
+
+- **Backtesting Framework**: Implement a backtesting framework that allows users to test their spread trading strategies against historical data. Provide performance metrics, including profitability, risk-adjusted returns, and drawdown analysis.
+
+- **Real-time Monitoring**: Enable real-time monitoring of active spread trading strategies, providing alerts and notifications when predefined conditions are met.
+
+### 3. Backtesting
+
+- **Historical Data Integration**: Integrate historical market data for backtesting purposes, allowing users to assess the viability of their chosen strategies.
+
+- **Performance Analysis**: Calculate and display comprehensive performance metrics for backtested strategies, including profit and loss (P&L), Sharpe ratio, maximum drawdown, and win/loss ratios.
+
+- **Parameter Optimization**: Implement tools for optimizing strategy parameters based on historical data to enhance trading strategies.
+
+- **Scenario Analysis**: Allow users to perform "what-if" scenario analysis by tweaking strategy parameters and assessing their impact on performance.
+
+These features should enable users to effectively identify, evaluate, and execute Z-Score Arbitrage and other spread trading strategies while providing the tools necessary for robust backtesting and performance analysis. The Stat Arb Opportunity Visualizer aims to be a versatile platform for quantitative finance professionals and traders seeking to capitalize on statistical arbitrage opportunities.
+
 ## Usage
 
 - Detailed usage instructions and documentation can be found in the project's documentation and user guide.
