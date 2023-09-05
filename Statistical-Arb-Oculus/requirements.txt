@@ -8,3 +8,4 @@ ccxt
 plotly
 matplotlib
 seaborn
+plotly.subplots
