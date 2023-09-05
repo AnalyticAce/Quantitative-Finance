@@ -1,10 +1,6 @@
 import ccxt
 import pandas as pd
-import matplotlib.pyplot as plt  # Import pyplot from matplotlib
-
-symbol = "BTC/USDT"
-timeframe = "1m"  # Changed to "1d" for daily data
-limit = 1000
+import matplotlib.pyplot as plt
 
 def fetch_crypto_data(symbol, timeframe, limit):
     binance = ccxt.binance({
@@ -20,5 +16,3 @@ def fetch_crypto_data(symbol, timeframe, limit):
     df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
 
     return df
-
-#c = fetch_crypto_data(symbol, timeframe, limit)
