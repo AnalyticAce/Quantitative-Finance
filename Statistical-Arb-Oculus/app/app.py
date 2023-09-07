@@ -7,7 +7,7 @@ from contact import *
 
 # Main Streamlit app
 def main():
-    st.set_page_config(page_title="Stat Arb Oculus", layout="wide", page_icon=":chart_increasing:")
+    st.set_page_config(page_title="Arbitrage", layout="wide")
 
     # Use the option_menu for navigation
     selected_page = option_menu(
@@ -21,10 +21,9 @@ def main():
     if selected_page == "Introduction":
         introduction_page()
     elif selected_page == "Arbitrage Opportunities":
-        sidebar()  # Show the sidebar only on this page
         arbitrage_opportunities_page()
-    elif selected_page == "Contact":
-        contact_page()
+        sidebar()
 
+# Execute the main function
 if __name__ == "__main__":
     main()

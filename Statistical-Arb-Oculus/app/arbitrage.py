@@ -7,6 +7,7 @@ from backtest import *
 
 # Define the sidebar content
 def sidebar():
+    st.sidebar.title("Options")
 
     forex_pairs = [
         "EUR/USD", "USD/JPY", "GBP/USD", "AUD/USD", "USD/CAD",
@@ -71,15 +72,11 @@ def sidebar():
     st.sidebar.write("Selected Start Date:", start_date)
     st.sidebar.write("Selected End Date:", end_date)
 
-    # Back Test section
-    back_test_section()
-
-
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():
     st.title("Arbitrage Opportunities")
-    # Add content for the Arbitrage Opportunities page here.
-    # ...
+
+    back_test_section()
 
 def metrics():
     st.title("Metrics")

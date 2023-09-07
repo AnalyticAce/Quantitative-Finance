@@ -1,34 +1,48 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
-from arbitrage import *
 import datetime
 
 # Define the Back Test section
 def back_test_section():
-    st.sidebar.title("Back Test")
+    st.title("Back Test")
+    st.markdown("---")  # Add a horizontal line to separate the sections
+
+    # Create a row for the inputs
+    cols1, cols2, cols3, cols4 = st.columns(4)
 
     # Long ticker option (Asset 1 or Asset 2)
-    #long_ticker = st.sidebar.radio("Long Ticker", ["Asset 1", "Asset 2"])
+    with cols1:
+        long_ticker = st.radio("Long Ticker", ["Asset 1", "Asset 2"])
 
     # Window input box
-    window = st.sidebar.number_input("Window", min_value=1, step=1)
+    with cols2:
+        window = st.text_input("Window", key="window")
 
     # Open trade at input box
-    open_trade_at = st.sidebar.number_input("Open Trade At", min_value=0.0)
+    with cols3:
+        open_trade_at = st.text_input("Open Trade At", key="open_trade_at")
 
     # Close trade at input box
-    close_trade_at = st.sidebar.number_input("Close Trade At", min_value=0.0)
+    with cols4:
+        close_trade_at = st.text_input("Close Trade At", key="close_trade_at")
+
+    # Create a row for the remaining inputs
+    cols5, cols6, cols7, cols8 = st.columns(4)
 
     # Volume input box
-    volume = st.sidebar.number_input("Volume", min_value=0.0)
+    with cols5:
+        volume = st.text_input("Volume", key="volume")
 
     # Initial Capital input box (in $)
-    initial_capital = st.sidebar.number_input("Initial Capital ($)", min_value=0.0)
+    with cols6:
+        initial_capital = st.text_input("Initial Capital ($)", key="initial_capital")
 
     # Commission input box with default value 0
-    commission = st.sidebar.number_input("Commission", min_value=0.0, value=0.0)
+    with cols7:
+        commission = st.text_input("Commission", value="0", key="commission")
 
     # Backtest button
-    if st.sidebar.button("Backtest", key="backtest_button"):
-        # Implement backtesting logic here
-        st.write("Backtesting in progress...")
+    with cols8:
+        st.write("")  # Spacer
+        if st.button("Backtest"):
+            # Implement backtesting logic here
+            st.write("Backtesting in progress...")
