@@ -50,7 +50,16 @@ def hedge_ratio(closing_prices_asset_2, closing_prices_asset_1):
 # {'1%': -3.4381962830171444, '5%': -2.8650034233058093, '10%': -2.568614210583549}
 # Since the t-stat value is below the critical value at 5%, the spread is considered stationary or cointegrated.
 
-# def is_stationary(spread):
+def is_stationary(spread, significance_level = 0.05):
+
+    result = adfuller(spread)
+    
+    p_value = result[1]
+    
+    if p_value <= significance_level:
+        return True
+    else:
+        return False 
 
 asset_symbol_1 = "EURUSD"
 asset_symbol_2 = "AUDCAD"
@@ -68,8 +77,15 @@ closing_prices_asset_2 = asset_2["close"]
 correlation = calculate_correlation(asset_1, asset_2, start_date, end_date, timeframe)
 print("Correlation Coefficient:", correlation)
 
-#spread = calculate_spread(closing_prices_asset_1, closing_prices_asset_2)
-#print("Spread:", spread)
+spread = calculate_spread(closing_prices_asset_1, closing_prices_asset_2)
+print("Spread:", spread)
+
+is_stationary_result = is_stationary(spread)
+
+if is_stationary_result:
+    print("The spread is stationary.")
+else:
+    print("The spread is not stationary.")
 
 #z_scores = calculate_zscore(spread)
 #print("Z-Scores:", z_scores)
