@@ -58,10 +58,78 @@ def sidebar():
         limit_range = (0, 1000)
         interval = st.sidebar.slider("Limit", min_value=limit_range[0], max_value=limit_range[1], step=1, value=(0, 500))
 
+def metrics_section():
+    st.title("Metrics")
+
+    # Define the metrics values
+    correlation = 0.75
+    hedge_ratio = 0.85
+    p_value = 0.05
+    is_stationary = "Yes"
+    half_life = 10
+    hurst_exponent = 0.5
+
+    # Create a container for the metrics
+    with st.container():
+        # Set the container width to 80%
+        st.write(
+            '<style>div[data-testid="stBlock"][data-st-id="2"] > div{max-width: 30%;}</style>',
+            unsafe_allow_html=True,
+        )
+
+        # Create a row for the metrics cards
+        cols1, cols2, cols3, cols4, cols5, cols6 = st.columns(6)
+
+        # Correlation metric card
+        with cols1:
+            st.write("Correlation")
+            if correlation < 0:
+                st.markdown(f'<p style="color:red;">{correlation}</p>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<p style="color:green;">{correlation}</p>', unsafe_allow_html=True)
+
+        # Hedge Ratio metric card
+        with cols2:
+            st.write("Hedge Ratio")
+            if hedge_ratio < 0:
+                st.markdown(f'<p style="color:red;">{hedge_ratio}</p>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<p style="color:green;">{hedge_ratio}</p>', unsafe_allow_html=True)
+
+        # P-Value metric card
+        with cols3:
+            st.write("P-Value")
+            if p_value < 0:
+                st.markdown(f'<p style="color:red;">{p_value}</p>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<p style="color:green;">{p_value}</p>', unsafe_allow_html=True)
+
+        # Is Stationary metric card
+        with cols4:
+            st.write("Is Stationary")
+            if is_stationary != "Yes":
+                st.markdown(f'<p style="color:red;">{is_stationary}</p>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<p style="color:green;">{is_stationary}</p>', unsafe_allow_html=True)
+
+        # Half-Life metric card
+        with cols5:
+            st.write("Half-Life")
+            if half_life < 0:
+                st.markdown(f'<p style="color:red;">{half_life}</p>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<p style="color:green;">{half_life}</p>', unsafe_allow_html=True)
+
+        # Hurst Exponent metric card
+        with cols6:
+            st.write("Hurst Exponent")
+            if hurst_exponent < 0:
+                st.markdown(f'<p style="color:red;">{hurst_exponent}</p>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<p style="color:green;">{hurst_exponent}</p>', unsafe_allow_html=True)
+
+
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():
-
+    metrics_section()
     back_test_section()
-
-def metrics():
-    st.title("Metrics")
