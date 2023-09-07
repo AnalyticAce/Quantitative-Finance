@@ -19,9 +19,6 @@ def sidebar():
         "ADA/USD", "XLM/USD", "EOS/USD", "TRX/USD", "LINK/USD"
     ]
 
-    # Sidebar title
-    st.sidebar.title("Options")
-
     # Get Pair button
     get_pair_button = st.sidebar.button("Get Pair", key="get_pair_button", help="Click to get the pair")
 
@@ -44,33 +41,24 @@ def sidebar():
         interval_options = ["1m", "5m", "15m", "1h", "4h", "1d", "1w", "1month"]
         interval = st.sidebar.selectbox("Interval/Timeframe", interval_options)
 
-    # Asset 1 and Asset 2 dropdown lists
-    assets = []
+    # Pair 1 and Pair 2 dropdown lists
+    Pairs = []
     if market == "Crypto":
-        assets = st.sidebar.selectbox("Asset 1", crypto_pairs), st.sidebar.selectbox("Asset 2", crypto_pairs)
+        Pairs = st.sidebar.selectbox("Pair 1", crypto_pairs), st.sidebar.selectbox("Pair 2", crypto_pairs)
     else:
-        assets = st.sidebar.selectbox("Asset 1", forex_pairs), st.sidebar.selectbox("Asset 2", forex_pairs)
+        Pairs = st.sidebar.selectbox("Pair 1", forex_pairs), st.sidebar.selectbox("Pair 2", forex_pairs)
 
-    # Start and End Date options
-    current_date = datetime.date.today()
-    two_months_ago = current_date - datetime.timedelta(days=60)
-
-    start_date = st.sidebar.date_input("Start Date", current_date - datetime.timedelta(days=1), min_value=two_months_ago, max_value=current_date)
-    end_date = st.sidebar.date_input("End Date", current_date, min_value=two_months_ago, max_value=current_date)
-
-    # Conditional rendering for interval options based on the selected market
-    if market == "Crypto":
-        st.sidebar.markdown("**Crypto Limit Range:**")
-        st.sidebar.write(f"Selected Limit Range: {interval[0]} to {interval[1]}")
-
-    # Display the selected options
-    st.sidebar.write("Selected Market:", market)
+    # Conditional rendering for Start and End Date based on the selected market
     if market != "Crypto":
-        st.sidebar.write("Selected Interval/Timeframe:", interval)
-    st.sidebar.write("Selected Asset 1:", assets[0])
-    st.sidebar.write("Selected Asset 2:", assets[1])
-    st.sidebar.write("Selected Start Date:", start_date)
-    st.sidebar.write("Selected End Date:", end_date)
+        current_date = datetime.date.today()
+        two_months_ago = current_date - datetime.timedelta(days=60)
+        start_date = st.sidebar.date_input("Start Date", current_date - datetime.timedelta(days=1), min_value=two_months_ago, max_value=current_date)
+        end_date = st.sidebar.date_input("End Date", current_date, min_value=two_months_ago, max_value=current_date)
+    else:
+        # Remove the Start and End Date inputs if Crypto is selected
+        st.sidebar.empty()
+        start_date = None
+        end_date = None
 
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():

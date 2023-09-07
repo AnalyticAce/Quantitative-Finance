@@ -9,9 +9,9 @@ def back_test_section():
     # Create a row for the inputs
     cols1, cols2, cols3, cols4 = st.columns(4)
 
-    # Long ticker option (Asset 1 or Asset 2)
+    # Long ticker option (Pair 1 or Pair 2)
     with cols1:
-        long_ticker = st.radio("Long Ticker", ["Asset 1", "Asset 2"])
+        long_ticker = st.radio("Long Ticker", ["Pair 1", "Pair 2"])
 
     # Window input box
     with cols2:
