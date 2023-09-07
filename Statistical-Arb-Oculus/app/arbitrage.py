@@ -128,7 +128,6 @@ def metrics_section():
             else:
                 st.markdown(f'<p style="color:green;">{hurst_exponent}</p>', unsafe_allow_html=True)
 
-
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():
     metrics_section()
