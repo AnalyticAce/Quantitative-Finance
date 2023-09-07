@@ -62,7 +62,7 @@ def sidebar():
 
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():
-    st.title("Arbitrage Opportunities")
+    #st.title("Arbitrage Opportunities")
 
     back_test_section()
 
