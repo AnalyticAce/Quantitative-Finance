@@ -4,7 +4,6 @@ from math import log
 from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 from src.data.fetch_data import fetch_fx_data
-#from statsmodels.regression.linear_model import OLS
 from statsmodels.tsa.stattools import adfuller
 import statsmodels.api as sm
 
@@ -96,6 +95,9 @@ H > 0.5 — The time series is trending (Trending)
 #def hurst_exponent():
 
 
+#def cointegration():
+
+
 asset_symbol_1 = "EURUSD"
 asset_symbol_2 = "AUDCAD"
 start_date = "2023-01-01"
@@ -104,8 +106,10 @@ timeframe = "daily"
 
 asset_1 = fetch_fx_data(asset_symbol_1, start_date, end_date, timeframe)
 asset_2 = fetch_fx_data(asset_symbol_2, start_date, end_date, timeframe)
-print(asset_1)
-print(asset_2)
+
+#print(asset_1)
+#print(asset_2)
+
 closing_prices_asset_1 = asset_1["close"]
 closing_prices_asset_2 = asset_2["close"]
 

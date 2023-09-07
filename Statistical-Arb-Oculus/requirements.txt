@@ -5,6 +5,7 @@ scipy
 scikit-learn
 requests
 streamlit
+streamlit-option-menu
 ccxt
 plotly
 matplotlib

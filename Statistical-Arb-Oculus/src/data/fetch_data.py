@@ -25,7 +25,7 @@ def fetch_fx_data(symbol, start_date, end_date, timeframe):
     tm.set_rest_api_key("PQgteXR13COKO54qQXdH")
     
     data = tm.timeseries(
-        currency = symbol,  # 'symbol' appears to be a DataFrame object
+        currency = symbol,
         start = start_date, 
         end = end_date, 
         interval = timeframe,
