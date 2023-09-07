@@ -35,10 +35,10 @@ def sidebar():
 
     # Define the interval options based on the selected market
     if market == "Crypto":
-        limit_range = (0, 1000)
-        interval = st.sidebar.slider("Limit", min_value=limit_range[0], max_value=limit_range[1], step=1, value=(0, 500))
+        interval_options = ["4h", "1d", "1w", "1month"]
+        interval = st.sidebar.selectbox("Interval/Timeframe", interval_options)
     else:
-        interval_options = ["1m", "5m", "15m", "1h", "4h", "1d", "1w", "1month"]
+        interval_options = ["daily", "weekly", "montly"]
         interval = st.sidebar.selectbox("Interval/Timeframe", interval_options)
 
     # Pair 1 and Pair 2 dropdown lists
@@ -55,14 +55,11 @@ def sidebar():
         start_date = st.sidebar.date_input("Start Date", current_date - datetime.timedelta(days=1), min_value=two_months_ago, max_value=current_date)
         end_date = st.sidebar.date_input("End Date", current_date, min_value=two_months_ago, max_value=current_date)
     else:
-        # Remove the Start and End Date inputs if Crypto is selected
-        st.sidebar.empty()
-        start_date = None
-        end_date = None
+        limit_range = (0, 1000)
+        interval = st.sidebar.slider("Limit", min_value=limit_range[0], max_value=limit_range[1], step=1, value=(0, 500))
 
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():
-    #st.title("Arbitrage Opportunities")
 
     back_test_section()
 

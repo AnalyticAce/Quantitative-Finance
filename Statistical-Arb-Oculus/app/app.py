@@ -12,17 +12,19 @@ def main():
     # Use the option_menu for navigation
     selected_page = option_menu(
         menu_title=None,
-        options=["Introduction", "Arbitrage Opportunities", "Contact"],
+        options=["Introduction 📖", "Arbitrage 📈", "Contact ☎️"],
         default_index=0,
         orientation="horizontal",
     )
 
     # Render the selected page based on user choice
-    if selected_page == "Introduction":
+    if selected_page == "Introduction 📖":
         introduction_page()
-    elif selected_page == "Arbitrage Opportunities":
+    elif selected_page == "Arbitrage 📈":
         arbitrage_opportunities_page()
         sidebar()
+    else:
+        contact_page()
 
 # Execute the main function
 if __name__ == "__main__":
