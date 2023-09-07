@@ -61,6 +61,41 @@ def is_stationary(spread, significance_level = 0.05):
     else:
         return False 
 
+"""
+Half-life indicates how long the spread typically takes to revert back to the mean. 
+A half-life of 10 days for example indicates that this pair typically takes 10 days to revert.
+"""
+
+def half_life(spread):
+    
+    spread_lag = spread.shift(1)
+    spread_lag.ix[0] = spread_lag.ix[1]
+
+    s_ret = spread - spread_lag
+    s_ret.ix[0] = s_ret.ix[1]
+
+    spread_lag2 = sm.add_constant(spread_lag)
+
+    model = sm.OLS(s_ret, spread_lag2)
+    res = model.fit()
+
+    halflife = round(-np.log(2) / res.params[1],0)
+    
+    return halflife
+
+"""
+Hurst Exponent:
+The Hurst exponent mainly helps us determine whether a time series is mean reverting or not. 
+The outputted value H from the Hurst formula is some value between 0 and 1.
+
+H < 0.5 — The time series is mean reverting (Sideways)
+H = 0.5 — The time series is a Geometric Brownian Motion (Random Walk)
+H > 0.5 — The time series is trending (Trending)
+"""
+
+#def hurst_exponent():
+
+
 asset_symbol_1 = "EURUSD"
 asset_symbol_2 = "AUDCAD"
 start_date = "2023-01-01"
