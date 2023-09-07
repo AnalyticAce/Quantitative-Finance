@@ -4,7 +4,7 @@ from src.data.fetch_data import fetch_fx_data
 
 # Define the assets in the pair
 asset_symbol_1 = "EURUSD"
-asset_symbol_2 = "USDJPY"
+asset_symbol_2 = "GBPUSD"
 start_date = "2023-01-01"
 end_date = "2023-09-01"
 timeframe = "daily"
@@ -34,7 +34,6 @@ ax2.set_ylabel(f"{asset_symbol_2} Price", color="orange")
 
 plt.title(f"{asset_symbol_1} vs {asset_symbol_2} Closing Prices")
 plt.xlabel("Date")
-plt.grid(True)
 
 # Display the plot
 plt.tight_layout()
