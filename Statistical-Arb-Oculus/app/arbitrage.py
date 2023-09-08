@@ -2,22 +2,12 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from arbitrage import *
 import datetime
+from src.data.fetch_data import *
+from src.mectrics.fx_mectrics import *
 from backtest import *
 
-
-# Define the sidebar content
-def sidebar():
+def sidebar(forex_pairs, crypto_pairs):
     st.sidebar.title("Options")
-
-    forex_pairs = [
-        "EUR/USD", "USD/JPY", "GBP/USD", "AUD/USD", "USD/CAD",
-        "NZD/USD", "USD/CHF", "EUR/GBP", "EUR/JPY", "GBP/JPY"
-    ]
-
-    crypto_pairs = [
-        "BTC/USD", "ETH/USD", "XRP/USD", "LTC/USD", "BCH/USD",
-        "ADA/USD", "XLM/USD", "EOS/USD", "TRX/USD", "LINK/USD"
-    ]
 
     # Get Pair button
     get_pair_button = st.sidebar.button("Get Pair", key="get_pair_button", help="Click to get the pair")
@@ -58,16 +48,9 @@ def sidebar():
         limit_range = (0, 1000)
         interval = st.sidebar.slider("Limit", min_value=limit_range[0], max_value=limit_range[1], step=1, value=(0, 500))
 
-def metrics_section():
-    st.title("Metrics")
+def metrics_section(correlation, hedge_ratio, p_value, is_stationary, half_life, hurst_exponent):
 
-    # Define the metrics values
-    correlation = 0.75
-    hedge_ratio = 0.85
-    p_value = 0.05
-    is_stationary = "Yes"
-    half_life = 10
-    hurst_exponent = 0.5
+    st.title("Metrics")
 
     # Create a container for the metrics
     with st.container():
@@ -130,5 +113,14 @@ def metrics_section():
 
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():
-    metrics_section()
+    
+    metrics_section(
+    correlation = 0.75,
+    hedge_ratio = 0.85,
+    p_value = 0.05,
+    is_stationary = "Yes",
+    half_life = 10,
+    hurst_exponent = 0.5
+    )
+    
     back_test_section()

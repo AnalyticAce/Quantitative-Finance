@@ -1,5 +1,7 @@
 import streamlit as st
 import datetime
+from src.data.fetch_data import *
+from src.mectrics.fx_mectrics import *
 
 # Define the Back Test section
 def back_test_section():
@@ -49,25 +51,21 @@ def back_test_section():
 
         # Backtest button
         with cols9:
-            st.write("")  # Spacer
+            st.write("")
             if st.button("Backtest"):
-                # Implement backtesting logic here
                 st.write("Backtesting in progress...")
-        back_test_result()
+        back_test_result(net_win_rate=0, z_score_win_rate_m=0, z_score_win_rate_p=0,
+        num_open_trade_p="Yes", num_open_trade_m=0, total_num_trades=0,
+        net_avg_return=0, net_total_return=0, net_total_drawdown=0,
+        total_profit=0)
 
-def back_test_result():
+def back_test_result(net_win_rate, z_score_win_rate_m, 
+    z_score_win_rate_p, num_open_trade_p, 
+    num_open_trade_m, total_num_trades, 
+    net_avg_return, net_total_return, 
+    net_total_drawdown, total_profit):
+
     st.markdown("---")
-
-    net_win_rate = 0.75
-    z_score_win_rate_m = 0.85
-    z_score_win_rate_p = 0.05
-    num_open_trade_p = 10
-    num_open_trade_m = 0.5
-    total_num_trades = 10
-    net_avg_return = 0.5
-    net_total_return = 0.6
-    net_total_drawdown = -19
-    total_profit = 1500
 
     with st.container():
         st.write(
@@ -108,7 +106,7 @@ def back_test_result():
                 st.markdown(f'<p style="color:red;">{num_open_trade_p}</p>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<p style="color:green;">{num_open_trade_p}</p>', unsafe_allow_html=True)
-    
+
         # num_open_trade_m
         with cols5:
             st.write("Num of Shorts")
@@ -132,7 +130,7 @@ def back_test_result():
                 st.markdown(f'<p style="color:red;">{net_avg_return}</p>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<p style="color:green;">{net_avg_return}</p>', unsafe_allow_html=True)
-            
+
         # net_total_return
         with cols8:
             st.write("Total Return")

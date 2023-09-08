@@ -13,4 +13,3 @@ seaborn
 plotly.subplots
 tradermade
 statsmodels
-streamlit_card
