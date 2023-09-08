@@ -1,7 +1,7 @@
 import streamlit as st
 import datetime
-from src.data.fetch_data import *
-from src.mectrics.fx_mectrics import *
+#from src.data.fetch_data import *
+#from src.mectrics.fx_mectrics import *
 
 # Define the Back Test section
 def back_test_section():

@@ -2,8 +2,8 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from arbitrage import *
 import datetime
-from src.data.fetch_data import *
-from src.mectrics.fx_mectrics import *
+#from src.data.fetch_data import *
+#from src.mectrics.fx_mectrics import *
 from introduction import *
 from contact import *
 
