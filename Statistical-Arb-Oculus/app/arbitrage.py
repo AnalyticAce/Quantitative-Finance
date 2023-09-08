@@ -88,16 +88,8 @@ def metrics_section():
             else:
                 st.markdown(f'<p style="color:green;">{correlation}</p>', unsafe_allow_html=True)
 
-        # Hedge Ratio metric card
-        with cols2:
-            st.write("Hedge Ratio")
-            if hedge_ratio < 0:
-                st.markdown(f'<p style="color:red;">{hedge_ratio}</p>', unsafe_allow_html=True)
-            else:
-                st.markdown(f'<p style="color:green;">{hedge_ratio}</p>', unsafe_allow_html=True)
-
         # P-Value metric card
-        with cols3:
+        with cols2:
             st.write("P-Value")
             if p_value < 0:
                 st.markdown(f'<p style="color:red;">{p_value}</p>', unsafe_allow_html=True)
@@ -105,7 +97,7 @@ def metrics_section():
                 st.markdown(f'<p style="color:green;">{p_value}</p>', unsafe_allow_html=True)
 
         # Is Stationary metric card
-        with cols4:
+        with cols3:
             st.write("Is Stationary")
             if is_stationary != "Yes":
                 st.markdown(f'<p style="color:red;">{is_stationary}</p>', unsafe_allow_html=True)
@@ -113,7 +105,7 @@ def metrics_section():
                 st.markdown(f'<p style="color:green;">{is_stationary}</p>', unsafe_allow_html=True)
 
         # Half-Life metric card
-        with cols5:
+        with cols4:
             st.write("Half-Life")
             if half_life < 0:
                 st.markdown(f'<p style="color:red;">{half_life}</p>', unsafe_allow_html=True)
@@ -121,12 +113,20 @@ def metrics_section():
                 st.markdown(f'<p style="color:green;">{half_life}</p>', unsafe_allow_html=True)
 
         # Hurst Exponent metric card
-        with cols6:
+        with cols5:
             st.write("Hurst Exponent")
             if hurst_exponent < 0:
                 st.markdown(f'<p style="color:red;">{hurst_exponent}</p>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<p style="color:green;">{hurst_exponent}</p>', unsafe_allow_html=True)
+
+        # Hedge Ratio metric card
+        with cols6:
+            st.write("Hedge Ratio")
+            if hedge_ratio < 0:
+                st.markdown(f'<p style="color:red;">{hedge_ratio}</p>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<p style="color:green;">{hedge_ratio}</p>', unsafe_allow_html=True)
 
 # Define the Arbitrage Opportunities page content
 def arbitrage_opportunities_page():
