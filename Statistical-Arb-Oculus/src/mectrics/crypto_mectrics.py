@@ -5,6 +5,7 @@ from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import adfuller
 import statsmodels.api as sm
+import hurst
 
 def calculate_correlation(closing_prices_asset_1, closing_prices_asset_2):
     """
@@ -104,7 +105,6 @@ def calculate_half_life(time_series):
     Returns:
         float: The estimated half-life.
     """
-
     if not isinstance(time_series, np.ndarray):
         time_series = np.array(time_series)
 
@@ -117,3 +117,22 @@ def calculate_half_life(time_series):
     half_life = -np.log(2) / model.params[1]
 
     return half_life
+
+
+def calculate_hurst_exponent(time_series):
+    """
+    Calculate the Hurst exponent of a time series using the "hurst" library.
+
+    Args:
+        time_series (numpy.ndarray or pandas.Series): The time series data.
+
+    Returns:
+        float: The estimated Hurst exponent.
+    """
+
+    if not isinstance(time_series, np.ndarray):
+        time_series = np.array(time_series)
+
+    H, _, _ = hurst.compute_Hc(time_series, kind='change', simplified=True)
+
+    return H
