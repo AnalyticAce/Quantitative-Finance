@@ -4,6 +4,7 @@ from math import log
 from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import adfuller
+import statsmodels.tsa.stattools as ts
 import statsmodels.api as sm
 import hurst
 
@@ -22,6 +23,29 @@ def calculate_correlation(closing_prices_asset_1, closing_prices_asset_2):
     
     return correlation_coefficient
 
+def calculate_cointegration(closing_prices_asset_1, closing_prices_asset_2):
+    """
+    Perform the Engle-Granger cointegration test between two time series.
+
+    Args:
+        closing_prices_asset_1 (numpy.ndarray or pandas.Series): The first time series.
+        closing_prices_asset_2 (numpy.ndarray or pandas.Series): The second time series.
+
+    Returns:
+        bool: True if cointegrated, False otherwise.
+        float: The p-value of the test.
+    """
+    if isinstance(closing_prices_asset_1, pd.Series):
+        closing_prices_asset_1 = closing_prices_asset_1.values
+    if isinstance(closing_prices_asset_2, pd.Series):
+        closing_prices_asset_2 = closing_prices_asset_2.values
+
+    result = sm.OLS(closing_prices_asset_1, sm.add_constant(closing_prices_asset_2)).fit()
+
+    p_value = sm.tsa.adfuller(result.resid)[1]
+
+    # Return True if cointegrated (p-value < 0.05)
+    return p_value < 0.05
 
 def calculate_spread(closing_prices_asset_1, closing_prices_asset_2):
     """
