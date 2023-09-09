@@ -53,8 +53,8 @@ def fetch_fx_data(symbol, start_date, end_date, timeframe):
     
     return data
 
-#fetch_crypto_data("BTC/USD", "1d", 200)
-fetch_crypto_data("ETH/USD", "1d", 200)
+fetch_crypto_data("BTC/USD", "1d", 1000)
+fetch_crypto_data("ETH/EUR", "1d", 1000)
 #forex_symbol = "EURUSD"
 #forex_start_date = "2023-01-01"
 #forex_end_date = "2023-09-01"

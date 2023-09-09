@@ -93,3 +93,27 @@ def is_stationary(spread, significance_level=0.05):
         return True
     else:
         return False
+
+def calculate_half_life(time_series):
+    """
+    Calculate the half-life of a mean-reverting time series.
+
+    Args:
+        time_series (numpy.ndarray or pandas.Series): The time series data.
+
+    Returns:
+        float: The estimated half-life.
+    """
+
+    if not isinstance(time_series, np.ndarray):
+        time_series = np.array(time_series)
+
+    delta_y = np.diff(time_series)
+
+    X = sm.add_constant(time_series[:-1])
+
+    model = sm.OLS(delta_y, X).fit()
+
+    half_life = -np.log(2) / model.params[1]
+
+    return half_life
