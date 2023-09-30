@@ -2,15 +2,17 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from arbitrage import *
 import datetime
+import pandas as pd
 #from src.data.fetch_data import *
 #from src.mectrics.fx_mectrics import *
+#from src.mectrics.crypto_mectrics import *
 from backtest import *
 
 def sidebar(forex_pairs, crypto_pairs):
     st.sidebar.title("Options")
 
     # Get Pair button
-    get_pair_button = st.sidebar.button("Get Pair", key="get_pair_button", help="Click to get the pair")
+    get_pair_button = st.sidebar.button("Fetch Data", key="get_pair_button", help="Click to get the pair")
 
     # Center align the button
     st.sidebar.markdown("<style>div[data-testid='stButton']>button {text-align: center;}</style>", unsafe_allow_html=True)
@@ -42,8 +44,10 @@ def sidebar(forex_pairs, crypto_pairs):
     if market != "Crypto":
         current_date = datetime.date.today()
         two_months_ago = current_date - datetime.timedelta(days=60)
-        start_date = st.sidebar.date_input("Start Date", current_date - datetime.timedelta(days=1), min_value=two_months_ago, max_value=current_date)
-        end_date = st.sidebar.date_input("End Date", current_date, min_value=two_months_ago, max_value=current_date)
+        start_date = st.sidebar.date_input("Start Date", current_date - datetime.timedelta(days=1), 
+                                        min_value=two_months_ago, max_value=current_date)
+        end_date = st.sidebar.date_input("End Date", current_date, min_value=two_months_ago,
+                                        max_value=current_date)
     else:
         limit_range = (0, 1000)
         interval = st.sidebar.slider("Limit", min_value=limit_range[0], max_value=limit_range[1], step=1, value=(0, 500))
@@ -54,7 +58,6 @@ def metrics_section(correlation, hedge_ratio, p_value, is_stationary, half_life,
 
     # Create a container for the metrics
     with st.container():
-        # Set the container width to 80%
         st.write(
             '<style>div[data-testid="stBlock"][data-st-id="2"] > div{max-width: 30%;}</style>',
             unsafe_allow_html=True,
@@ -124,3 +127,19 @@ def arbitrage_opportunities_page():
     )
     
     back_test_section()
+
+"""
+def show_spread(closing_prices_asset_1, closing_prices_asset_2):
+
+    spread = calculate_spread(closing_prices_asset_1, closing_prices_asset_2)
+    spread_chart = pd.DataFrame(spread)
+    st.title("Spread Chart")
+    st.line_chart(spread_chart, color=["#0000FF"])
+
+def show_zcore(spread):
+
+    zscore = calculate_zscore(spread)
+    zscore_chart = pd.DataFrame(zscore)
+    st.title("Zscore Chart")
+    st.line_chart(zscore_chart, color=["#0000FF"])
+"""
