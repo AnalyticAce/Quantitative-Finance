@@ -1,5 +1,6 @@
 import streamlit as st
 
+#st.set_page_config(page_title="Simple Position Zize Cal", layout="wide", page_icon=":chart:")
 st.title("Simple Trade sizing Calculator")
 st.write("This tool helps you size your position and make informed trading decisions.")
 
