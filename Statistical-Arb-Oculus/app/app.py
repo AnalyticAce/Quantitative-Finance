@@ -20,7 +20,7 @@ def main():
         "ADA/USD", "XLM/USD", "EOS/USD", "TRX/USD", "LINK/USD"
     ]
 
-    st.set_page_config(page_title="Arbitrage", layout="wide")
+    st.set_page_config(page_title="Arbitrage", layout="wide", page_icon=":chart:")
 
     # Use the option_menu for navigation
     selected_page = option_menu(
