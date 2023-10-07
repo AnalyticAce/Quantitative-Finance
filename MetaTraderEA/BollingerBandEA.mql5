@@ -57,7 +57,7 @@ void OnTick() {
          double tp = bid - distance;
          tp = NormalizeDouble(tp, _Digits);
          
-         trade.Sell(lot,_Symbol, bid, tp, "Sell");
+         trade.Sell(lot,_Symbol, bid, sl, tp, "Sell");
       }
       else if (close1 < bblower[1] && close2 < bblower[0]) { 
          Print("Close is below bblower"); 
