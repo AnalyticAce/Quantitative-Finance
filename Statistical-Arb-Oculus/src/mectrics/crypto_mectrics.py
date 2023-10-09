@@ -5,10 +5,11 @@ from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import adfuller
 import statsmodels.tsa.stattools as ts
+from typing import Tuple
 import statsmodels.api as sm
 import hurst
 
-def calculate_correlation(closing_prices_asset_1, closing_prices_asset_2):
+def calculate_correlation(closing_prices_asset_1: pd.Series, closing_prices_asset_2: pd.Series) -> float:
     """
     Calculate the correlation coefficient between two assets based on their closing prices.
     
@@ -23,7 +24,7 @@ def calculate_correlation(closing_prices_asset_1, closing_prices_asset_2):
     
     return correlation_coefficient
 
-def calculate_cointegration(closing_prices_asset_1, closing_prices_asset_2):
+def calculate_cointegration(closing_prices_asset_1, closing_prices_asset_2) -> Tuple[bool, float]:
     """
     Perform the Engle-Granger cointegration test between two time series.
 
@@ -32,8 +33,7 @@ def calculate_cointegration(closing_prices_asset_1, closing_prices_asset_2):
         closing_prices_asset_2 (numpy.ndarray or pandas.Series): The second time series.
 
     Returns:
-        bool: True if cointegrated, False otherwise.
-        float: The p-value of the test.
+        Tuple[bool, float]: (Cointegration result, p-value of the test).
     """
     if isinstance(closing_prices_asset_1, pd.Series):
         closing_prices_asset_1 = closing_prices_asset_1.values
@@ -45,9 +45,9 @@ def calculate_cointegration(closing_prices_asset_1, closing_prices_asset_2):
     p_value = sm.tsa.adfuller(result.resid)[1]
 
     # Return True if cointegrated (p-value < 0.05)
-    return p_value < 0.05
+    return p_value < 0.05, p_value
 
-def calculate_spread(closing_prices_asset_1, closing_prices_asset_2):
+def calculate_spread(closing_prices_asset_1: pd.Series, closing_prices_asset_2: pd.Series) -> list:
     """
     Calculate the spread between two assets based on their returns.
     
@@ -68,7 +68,7 @@ def calculate_spread(closing_prices_asset_1, closing_prices_asset_2):
 
     return spread
 
-def calculate_zscore(spread):
+def calculate_zscore(spread: list) -> list:
     """
     Calculate the Z-score of a spread.
     
@@ -84,7 +84,7 @@ def calculate_zscore(spread):
     
     return z_scores
 
-def hedge_ratio(closing_prices_asset_2, closing_prices_asset_1):
+def hedge_ratio(closing_prices_asset_2: pd.Series, closing_prices_asset_1: pd.Series) -> float:
     """
     Calculate the hedge ratio for two assets.
     
@@ -100,7 +100,7 @@ def hedge_ratio(closing_prices_asset_2, closing_prices_asset_1):
 
     return model.params[1]
 
-def is_stationary(spread, significance_level=0.05):
+def is_stationary(spread: list, significance_level: float = 0.05) -> bool:
     """
     Check the stationarity of a spread using the Augmented Dickey-Fuller (ADF) test.
     
@@ -119,7 +119,7 @@ def is_stationary(spread, significance_level=0.05):
     else:
         return False
 
-def calculate_half_life(time_series):
+def calculate_half_life(time_series: np.ndarray or pd.Series) -> float:
     """
     Calculate the half-life of a mean-reverting time series.
 
@@ -142,8 +142,7 @@ def calculate_half_life(time_series):
 
     return half_life
 
-
-def calculate_hurst_exponent(time_series):
+def calculate_hurst_exponent(time_series: np.ndarray or pd.Series) -> float:
     """
     Calculate the Hurst exponent of a time series using the "hurst" library.
 
