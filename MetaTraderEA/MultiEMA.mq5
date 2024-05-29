@@ -8,12 +8,13 @@ CTrade trade;
 
 input group "====== Trade Setings ======"
 input ENUM_TIMEFRAMES Timeframe = PERIOD_CURRENT;
+input int ADXPeriod = 100; // This the ADX Period
 input ulong Magic = 8888;
 input double lot_size = 0.2;
 input double RiskPercent = 10;
 input group "Trailling Stop Loss"
 input int InpTrallingPoints = 200;
-input int InpMinProfit = 30;
+input int InpMinProfit = 10;
 input int InpTraillingStep = 20;
 
 input group "====== BreakEven Settings ======"
@@ -224,6 +225,34 @@ void BreakEven(double AskPrice, double BidPrice)
 
 void OnTick()
 {
+    bool sell_adx = false;
+    bool buy_adx = false;
+    int ADXhandle;
+    double ADX_di_plus[], ADX_di_minus[], ADX_arr[];
+    
+    ADXhandle = iADX(_Symbol, PERIOD_CURRENT, ADXPeriod);
+    CopyBuffer(ADXhandle, 0, 0, 1, ADX_arr);
+    CopyBuffer(ADXhandle, 1, 0, 1, ADX_di_plus);
+    CopyBuffer(ADXhandle, 2, 0, 1, ADX_di_minus);
+   
+    double ADX_min = NormalizeDouble(ADX_di_plus[0], _Digits);
+    double ADX_plus = NormalizeDouble(ADX_di_minus[0], _Digits);
+    double ADX_val = NormalizeDouble(ADX_arr[0], _Digits);
+      
+      if (ADX_min < ADX_plus) {
+         sell_adx = true;
+      } else if (ADX_min > ADX_plus) {
+         buy_adx = true;
+      }
+      
+      Comment(
+         "ADX value : " + ADX_val, "\n" +
+         "DI Plus : " + ADX_plus, "\n" +
+         "DI Minus : " + ADX_min, "\n" +
+         "Sell (ADX_min > ADX_plus): " + sell_adx, "\n" +
+         "Buy (ADX_min < ADX_plus): " + buy_adx, "\n"
+      );
+   
     double AskPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
     double BidPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
     
@@ -273,7 +302,7 @@ void OnTick()
     // strategy
     if (em1buffer[0] > em2buffer[0] && em1buffer[0] > em3buffer[0]
         && em1buffer[0] > em4buffer[0] && em1buffer[0] > em5buffer[0]
-        && em1buffer[0] > em6buffer[0]) {
+        && em1buffer[0] > em6buffer[0] && buy_adx) {
         // Close sell trade if open
         if (PositionSelect(_Symbol)
             && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL) {
@@ -294,7 +323,7 @@ void OnTick()
     // Sell condition: EMA 4 is below all other EMAs
     else if (em1buffer[0] < em2buffer[0] && em1buffer[0] < em3buffer[0]
          && em1buffer[0] < em4buffer[0] && em1buffer[0] < em5buffer[0]
-         && em4buffer[0] < em6buffer[0]) {
+         && em4buffer[0] < em6buffer[0] && sell_adx) {
         // Close buy trade if open
         if (PositionSelect(_Symbol)
             && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) {
@@ -311,5 +340,5 @@ void OnTick()
             // trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, lot_size, bid, 0, 0, "Sell :)");
         }
     }
-    BreakEven(AskPrice, BidPrice);
+    //BreakEven(AskPrice, BidPrice);
 }
