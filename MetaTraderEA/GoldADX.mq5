@@ -86,12 +86,6 @@ void OnTick()
     
     double Close1 = iClose(_Symbol, Timeframe, 1);
     double Close2 = iClose(_Symbol, Timeframe, 2);
-
-    /*int value = CopyBuffer(em50handle, 0, 0, 2, em50buffer);
-    if (value != 2) {
-        Alert("Not enough data for the EMA 50");
-        return;
-    }*/
     
     // strategy
     if (buy_adx) {
