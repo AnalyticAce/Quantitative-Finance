@@ -1,5 +1,5 @@
 //+------------------------------------------------------------------+
-//|                                                  IchimokuADX.mq5 |
+//|                                                     ADXULTIM.mq5 |
 //|                                  Copyright 2023, MetaQuotes Ltd. |
 //|                                             https://www.mql5.com |
 //+------------------------------------------------------------------+
@@ -9,7 +9,7 @@ CTrade trade;
 #include <Indicators\Trend.mqh>
 CiIchimoku ichimoku;
 
-input group "====== Indicators ======"
+input group "Indicators Settings"
 input ENUM_TIMEFRAMES timeframe = PERIOD_CURRENT;
 input int adxPeriod = 100; // This is the ADX Period
 
@@ -17,8 +17,10 @@ input int tenkansen = 9; // Choose Tenken-sen Value
 input int kijunsen = 26; // Choose Kijun-sen Value
 input int senkouspan = 52; // Choose SenkouSpan Value
 
-input group "===== Money Management ====="
+input group "Money Management"
 input double lotSize = 0.05; // Choose the Volume per Trade
+
+input group "EA Settings"
 input ulong Magic = 8888; // Choose a Magic Number for the EA
 
 bool tenkenAboveKijun = false, tenkenBelowKijun = false;
