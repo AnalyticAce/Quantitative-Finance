@@ -1,5 +1,5 @@
 //+------------------------------------------------------------------+
-//|                                                   IchiokuADX.mq5 |
+//|                                                  IchimokuADX.mq5 |
 //|                                  Copyright 2023, MetaQuotes Ltd. |
 //|                                             https://www.mql5.com |
 //+------------------------------------------------------------------+
@@ -10,27 +10,36 @@
 CTrade trade;
 CiIchimoku ichimoku;
 
-input group "---- General Settings ----"
+input group "==== General Settings ===="
 input ENUM_TIMEFRAMES timeframe = PERIOD_CURRENT; // Trading Timeframe
 input ulong Magic = 8888; // EA Magic Number
 
-input group "---- Indicators Settings ----"
-input group "ADX Indicator"
+input group "==== Indicators Settings ===="
+input group "=== ADX Indicator ==="
 input int adxPeriod = 100; // ADX Period
 
-input group "Ichimoku Indicator"
+input group "=== Ichimoku Indicator ==="
 input int tenkansen = 9; // Tenken-sen Value
 input int kijunsen = 26; // Kijun-sen Value
 input int senkouspan = 52; // SenkouSpan Value
 
-input group "Moving Average Indicator"
+input group "=== Moving Average Indicator ==="
 input int maPeriod = 200; // Moving Average Period
 input ENUM_MA_METHOD maMethod = MODE_EMA; // Moving Average Method
 input ENUM_TIMEFRAMES maTimeframe = PERIOD_CURRENT; // Moving Average Timeframe
 
-input group "---- Money Management ----"
-input double lotSize = 0.05; // Volume per Trade
+input group "==== Money Management ===="
+input group "=== Volume Sizing ==="
+enum SIZINGMETHOD {
+   DYNAMIC, // Dynamic Volume Sizing (Lot Size Based on Risk Per Trade)
+   FIXED // Fixed Volume Sizing
+};
 
+input SIZINGMETHOD sizingMethod = FIXED; // Choose a Sizing Method
+input double lotSize = 0.05; // Volume per Trade
+input double RiskPercent = 10; // If Sizing Method is Dynamic Choose a Risk %
+
+input group "=== Trade Management ==="
 enum CLOSINGMETHOD {
     OPPOSITE, // Close Trade When Opposite signal is met
     STOPLOSSTAKEPROFIT // Set Take Profit and Stop Loss
@@ -38,15 +47,22 @@ enum CLOSINGMETHOD {
 
 input CLOSINGMETHOD closingMethod = OPPOSITE; // Trade Closing Method
 input double SL = 50; // Set a Stop Loss
-input double TP = 100; // Set a Take Profit
+input double TP = 150; // Set a Take Profit
 
 enum TOOGLEIT {
-   YES, // Breakeven Toogled
-   NO // Breakeven is not Active
+   YES, // Active
+   NO  // Inactive
 };
 
+input group "== BreakEven =="
 input TOOGLEIT ToogleBreakeven = NO; // Do you Want to Trigger Breakeven ?
 input double ProfitEvenTrigers = 1000; // Trigger BreakEven After
+
+input group "== Trailing Stop =="
+input TOOGLEIT ToogleTrailingStop = NO; // Do you Want to Trigger Trailing Stop ?
+input int InpTrallingPoints = 200;
+input int InpMinProfit = 10;
+input int InpTraillingStep = 20;
 
 bool tenkenAboveKijun = false, tenkenBelowKijun = false;
 bool FutureCloudGreen = false,  FutureCloudRed = false;
@@ -63,7 +79,12 @@ int OnInit() {
       Alert("Initialization failed");
       return INIT_FAILED;
     }
-
+    
+    if (ToogleTrailingStop == YES && ToogleBreakeven == YES) {
+      Alert("Please you can't Toogle TrailingStop and Breakeven Mechanism At the same time");
+      return INIT_PARAMETERS_INCORRECT;
+    
+    }
     ichimoku.Create(_Symbol, timeframe, tenkansen, kijunsen, senkouspan);
     trade.SetExpertMagicNumber(Magic);
 
@@ -124,15 +145,100 @@ void BreakEven(double AskPrice, double BidPrice)
          double OpenPrice = PositionGetDouble(POSITION_PRICE_OPEN);
          if (positionType == POSITION_TYPE_BUY) {
             if (AskPrice > (OpenPrice + ProfitEvenTrigers * _Point)) {
-               trade.PositionModify(ticket, OpenPrice + 1, 0);                  
+               trade.PositionModify(ticket, OpenPrice + 3, 0);                  
             }
          } else if (positionType == POSITION_TYPE_SELL) {
             if (BidPrice < (OpenPrice - ProfitEvenTrigers * _Point)) {
-               trade.PositionModify(ticket, OpenPrice - 1, 0);                  
+               trade.PositionModify(ticket, OpenPrice - 3, 0);                  
             }
          }
       }
    }
+}
+
+void TrailingStop()
+{
+    for (int i = 0; i < PositionsTotal(); i++) {
+        // Get ticket number
+        ulong ticket = PositionGetTicket(i);
+        if (ticket == 0)
+            continue;
+
+        if (PositionSelectByTicket(ticket)) {
+            if (PositionGetInteger(POSITION_MAGIC) == Magic) {
+                // Modify trailing stop
+                double TrailingStopPrice;
+                double currentProfit;
+
+                long positionType = PositionGetInteger(POSITION_TYPE);
+                double openPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+
+                // Input to point
+                double MinimumProfit = InpMinProfit * _Point;
+                double TrailingStep = InpTraillingStep * _Point;
+                double TrailingPoint = InpTrallingPoints * _Point;
+
+                // Get current SL & TP
+                double CurrentSL = PositionGetDouble(POSITION_SL);
+                CurrentSL = NormalizeDouble(CurrentSL, _Digits);
+
+                // Get current ask and bid
+                double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+                double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+
+                if (positionType == POSITION_TYPE_BUY) {
+                    TrailingStopPrice = bid - TrailingPoint;
+                    TrailingStopPrice = NormalizeDouble(TrailingStopPrice, _Digits);
+                    currentProfit = bid - openPrice;
+                    // Check if we need to move the trailing stop
+                    if (TrailingStopPrice > CurrentSL &&
+                        currentProfit >= MinimumProfit &&
+                        (TrailingStopPrice - CurrentSL) >= TrailingStep) {
+                        if (!trade.PositionModify(ticket, TrailingStopPrice, 0)) {
+                            Print("Failed to modify buy position: ", trade.ResultRetcode());
+                        } else {
+                            Print("Trailing stop updated for buy position: ", ticket);
+                        }
+                    }
+                } else if (positionType == POSITION_TYPE_SELL) {
+                    TrailingStopPrice = ask + TrailingPoint;
+                    TrailingStopPrice = NormalizeDouble(TrailingStopPrice, _Digits);
+                    currentProfit = openPrice - ask;
+                    if (TrailingStopPrice < CurrentSL &&
+                        currentProfit >= MinimumProfit &&
+                        (CurrentSL - TrailingStopPrice) >= TrailingStep) {
+                        if (!trade.PositionModify(ticket, TrailingStopPrice, 0)) {
+                            Print("Failed to modify sell position: ", trade.ResultRetcode());
+                        } else {
+                            Print("Trailing stop updated for sell position: ", ticket);
+                        }
+                    }
+                }
+            }
+        }
+    } 
+}
+
+double calclots(double slPoints) {
+    double risk = AccountInfoDouble(ACCOUNT_BALANCE) * RiskPercent / 100;
+    double ticksize = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+    double tickvalue = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+    double lotstep = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+
+    double moneyPerLotstep = slPoints / ticksize * tickvalue * lotstep;
+    double lots = MathFloor(risk / moneyPerLotstep) * lotstep;
+
+    double minvolume = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_MIN);
+    double maxvolume = SymbolInfoDouble(Symbol(), SYMBOL_VOLUME_MAX);
+
+    if (maxvolume != 0)
+        lots = MathMin(lots, maxvolume);
+    if (minvolume != 0)
+        lots = MathMax(lots, minvolume);
+
+    lots = NormalizeDouble(lots, 2);
+ 
+    return lots;
 }
 
 void OnTick() {
@@ -192,20 +298,16 @@ void OnTick() {
         PriceAboveCloud = false; 
         PriceBelowCloud = false;
     }
-    
-    if(Chikou < SpanAx26 && Chikou < SpanBx26) {
+
+   if (Chikou < SpanAx26 && Chikou < SpanBx26) {
       ChikouAboveCloud = false; 
       ChikouBelowCloud = true;
-    }
-    
-    if(SpanAx26 > SpanBx26 && Chikou > SpanBx26 && Chikou < SpanAx26) {
-      ChikouAboveCloud = false; 
+   } else if (Chikou > SpanAx26 && Chikou > SpanBx26) {
+      ChikouAboveCloud = true; 
       ChikouBelowCloud = false;
-   }
-   
-   if(SpanBx26 > SpanAx26 && Chikou > SpanAx26 && Chikou < SpanBx26) {
-      ChikouAboveCloud = false; 
-      ChikouBelowCloud = false;
+   } else {
+       ChikouAboveCloud = false; 
+       ChikouBelowCloud = false;
    }
       
     bool sellAdx = false;
@@ -228,10 +330,13 @@ void OnTick() {
     double adxPlus = NormalizeDouble(adxDiPlus[0], _Digits);
     double adxMinus = NormalizeDouble(adxDiMinus[0], _Digits);
     double maVal = NormalizeDouble(maArr[0], _Digits);
+    
+    double AskPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
+    double BidPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
 
-    if (/*maVal < Closex1 &&*/ adxMinus < adxPlus && tenkenAboveKijun /*&& FutureCloudGreen && PriceAboveCloud && ChikouAboveCloud*/) {
+    if (/*maVal < Closex1 &&*/ adxMinus < adxPlus && tenkenAboveKijun && /*FutureCloudGreen && PriceAboveCloud &&*/ ChikouAboveCloud) {
         buyAdx = true;
-    } else if (/*maVal > Closex1 &&*/ adxMinus > adxPlus && tenkenBelowKijun /*&& FutureCloudRed && PriceBelowCloud && ChikouBelowCloud*/) {
+    } else if (/*maVal > Closex1 &&*/ adxMinus > adxPlus && tenkenBelowKijun && /*FutureCloudRed && PriceBelowCloud &&*/ ChikouBelowCloud) {
         sellAdx = true;
     }
 
@@ -278,5 +383,9 @@ void OnTick() {
                trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, lotSize, bid, 0, 0, "Sell :)");
             }
          }
+    }
+    
+    if (ToogleBreakeven == YES) {
+         BreakEven(AskPrice, BidPrice);
     }
 }
