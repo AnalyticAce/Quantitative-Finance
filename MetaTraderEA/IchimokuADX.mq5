@@ -351,6 +351,10 @@ void OnTick() {
         "\nServer Time : " + (string)TimeCurrent()
     );
 
+    if (PositionsTotal() > 0 && ToogleTrailingStop == YES) {
+        TrailingStop();
+    }
+    
     if (buyAdx) {
         if (PositionSelect(_Symbol) && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL) {
             trade.PositionClose(_Symbol);
@@ -360,12 +364,17 @@ void OnTick() {
             double entry = Closex1;
             double stoploss = ask - SL * _Point;
             double takeprofit = ask + TP * _Point;
+            double calculatedLot = calclots(stoploss);
             Print("BUY Order: Ask=", ask, ", StopLoss=", stoploss, ", TakeProfit=", takeprofit);
-            if (closingMethod == STOPLOSSTAKEPROFIT) {
+            if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == FIXED) {
                trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, lotSize, ask, stoploss, takeprofit, "Buy :)");
-            } else if (closingMethod == OPPOSITE) {
+            } else if (closingMethod == OPPOSITE && sizingMethod == FIXED) {
                trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, lotSize, ask, 0, 0, "Buy :)");
-            }
+            } else if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == DYNAMIC) {
+               trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, calculatedLot, ask, stoploss, takeprofit, "Buy :)");
+            } else if (closingMethod == OPPOSITE && sizingMethod == DYNAMIC) {
+               trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, calculatedLot, ask, 0, 0, "Buy :)");
+            } 
         }
     } else if (sellAdx) {
         if (PositionSelect(_Symbol) && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) {
@@ -376,11 +385,16 @@ void OnTick() {
             double entry = Closex1;
             double stoploss = bid + SL * _Point;
             double takeprofit = bid - TP * _Point;
+            double calculatedLot = calclots(stoploss);
             Print("SELL Order: Bid=", bid, ", StopLoss=", stoploss, ", TakeProfit=", takeprofit);
-            if (closingMethod == STOPLOSSTAKEPROFIT) {
+            if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == FIXED) {
                trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, lotSize, bid, stoploss, takeprofit, "Sell :)");
-            } else if (closingMethod == OPPOSITE) {
+            } else if (closingMethod == OPPOSITE && sizingMethod == FIXED) {
                trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, lotSize, bid, 0, 0, "Sell :)");
+            } else if (closingMethod == OPPOSITE && sizingMethod == DYNAMIC) {
+               trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, calculatedLot, bid, 0, 0, "Sell :)");
+            } else if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == DYNAMIC) {
+               trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, calculatedLot, bid, stoploss, takeprofit, "Sell :)");
             }
          }
     }
