@@ -246,6 +246,43 @@ double calclots(double slPoints) {
     return lots;
 }
 
+void ClosePosition(bool isBuy)
+{
+    if (PositionSelect(_Symbol) && 
+        PositionGetInteger(POSITION_TYPE) == (isBuy ? POSITION_TYPE_SELL : POSITION_TYPE_BUY)) {
+        trade.PositionClose(_Symbol);
+    }
+}
+
+void OpenPosition(bool isBuy)
+{
+    double price = isBuy ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    double stoploss = isBuy ? (price - SL * _Point) : (price + SL * _Point);
+    double takeprofit = isBuy ? (price + TP * _Point) : (price - TP * _Point);
+    double calculatedLot = calclots(stoploss);
+    ENUM_ORDER_TYPE orderType = isBuy ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
+    string orderTypeStr = isBuy ? "Buy :)" : "Sell :)";
+    
+    Print(orderTypeStr, " Order: ", isBuy ? "Ask=" : "Bid=", price, ", StopLoss=", stoploss, ", TakeProfit=", takeprofit);
+
+    if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == FIXED) {
+        trade.PositionOpen(_Symbol, orderType, lotSize, price, stoploss, takeprofit, orderTypeStr);
+    } else if (closingMethod == OPPOSITE && sizingMethod == FIXED) {
+        trade.PositionOpen(_Symbol, orderType, lotSize, price, 0, 0, orderTypeStr);
+    } else if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == DYNAMIC) {
+        trade.PositionOpen(_Symbol, orderType, calculatedLot, price, stoploss, takeprofit, orderTypeStr);
+    } else if (closingMethod == OPPOSITE && sizingMethod == DYNAMIC) {
+        trade.PositionOpen(_Symbol, orderType, calculatedLot, price, 0, 0, orderTypeStr);
+    }
+}
+
+void HandlePosition(bool isBuy) {
+    ClosePosition(isBuy);
+    if (!PositionSelect(_Symbol)) {
+        OpenPosition(isBuy);
+    }
+}
+
 void OnTick() {
     if (!isNewBar()) return;
 
@@ -267,70 +304,38 @@ void OnTick() {
     double Closex1 = iClose(_Symbol, timeframe, 1); 
     double Closex2 = iClose(_Symbol, timeframe, 2);
     
-    if (SpanBf26 > SpanAf26) { 
-        FutureCloudGreen = false; 
-        FutureCloudRed = true;
-    }
-    
-    if (PriceAboveCloud == false && (Closex2 < SpanAx2 || Closex2 < SpanBx2)
-        && Closex1 > SpanAx1 && Closex1 > SpanBx1) { 
-        PriceAboveCloud = true;
-        PriceBelowCloud = false;   
-    }
-    
-    if (PriceBelowCloud == false && (Closex2 > SpanAx2 || Closex2 > SpanBx2)
-        && Closex1 < SpanAx1 && Closex1 < SpanBx1) { 
-        PriceAboveCloud = false;
-        PriceBelowCloud = true;
-    }
+    FutureCloudGreen = SpanBf26 <= SpanAf26;
+    FutureCloudRed = !FutureCloudGreen;
 
-    if (Tenkan > Kijun) {
-        tenkenAboveKijun = true; 
-        tenkenBelowKijun = false;
-    }
-    
-    if (Tenkan < Kijun) {
-        tenkenAboveKijun = false; 
-        tenkenBelowKijun = true;
-    }
-    
-    if (SpanAx1 > SpanBx1 && Closex1 > SpanBx1 && Closex1 < SpanAx1) {
-        PriceAboveCloud = false;
-        PriceBelowCloud = false;
-    }
-    
-    if (SpanBx1 > SpanAx1 && Closex1 > SpanAx1 && Closex1 < SpanBx1) {
-        PriceAboveCloud = false; 
-        PriceBelowCloud = false;
-    }
+    PriceAboveCloud = !PriceBelowCloud && (Closex2 < SpanAx2 || Closex2 < SpanBx2) && Closex1 > SpanAx1 && Closex1 > SpanBx1;
+    PriceBelowCloud = !PriceAboveCloud && (Closex2 > SpanAx2 || Closex2 > SpanBx2) && Closex1 < SpanAx1 && Closex1 < SpanBx1;
 
-   if (Chikou < SpanAx26 && Chikou < SpanBx26) {
-      ChikouAboveCloud = false; 
-      ChikouBelowCloud = true;
-   } else if (Chikou > SpanAx26 && Chikou > SpanBx26) {
-      ChikouAboveCloud = true; 
-      ChikouBelowCloud = false;
-   } else {
-       ChikouAboveCloud = false; 
-       ChikouBelowCloud = false;
-   }
-      
-    bool sellAdx = false;
-    bool buyAdx = false;
+    tenkenAboveKijun = Tenkan > Kijun;
+    tenkenBelowKijun = !tenkenAboveKijun;
+
+    bool isSpanAx1AboveSpanBx1 = SpanAx1 > SpanBx1;
+    bool isSpanBx1AboveSpanAx1 = SpanBx1 > SpanAx1;
+
+    PriceAboveCloud = !isSpanAx1AboveSpanBx1 && !isSpanBx1AboveSpanAx1 && Closex1 > SpanBx1 && Closex1 < SpanAx1;
+    PriceBelowCloud = !isSpanAx1AboveSpanBx1 && !isSpanBx1AboveSpanAx1 && Closex1 > SpanAx1 && Closex1 < SpanBx1;
+
+    ChikouAboveCloud = Chikou > SpanAx26 && Chikou > SpanBx26;
+    ChikouBelowCloud = !ChikouAboveCloud;
+
     double adxDiPlus[], adxDiMinus[], adxArr[], maArr[];
-   
+
     if (CopyBuffer(adxHandle, 0, 0, 1, adxArr) <= 0 || 
         CopyBuffer(adxHandle, 1, 0, 1, adxDiPlus) <= 0 ||
         CopyBuffer(adxHandle, 2, 0, 1, adxDiMinus) <= 0) {
         Print("Error copying indicators buffer");
         return;
     }
-    
+
     if (CopyBuffer(maHandle, 0, 0, 1, maArr) <= 0) {
        Print("Error copying Moving Average indicator buffer");
        return;
     }
-    
+
     double adxVal = NormalizeDouble(adxArr[0], _Digits);
     double adxPlus = NormalizeDouble(adxDiPlus[0], _Digits);
     double adxMinus = NormalizeDouble(adxDiMinus[0], _Digits);
@@ -339,83 +344,24 @@ void OnTick() {
     double AskPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
     double BidPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
 
-    if (
-        maVal < Closex1 
-        && adxMinus < adxPlus
-        && tenkenAboveKijun 
-        //&& FutureCloudGreen 
-        && PriceAboveCloud 
-        && ChikouAboveCloud
-        ) {
-        buyAdx = true;
-    } else if (
-        maVal > Closex1 
-        && adxMinus > adxPlus
-        && tenkenBelowKijun
-        //&& FutureCloudRed 
-        && PriceBelowCloud
-        && ChikouBelowCloud
-        ) {
-        sellAdx = true;
-    }
+    bool BuyCond = maVal < Closex1 && adxMinus < adxPlus
+        && tenkenAboveKijun && PriceAboveCloud && ChikouAboveCloud;
 
+    bool SellCond = maVal > Closex1 && adxMinus > adxPlus
+        && tenkenBelowKijun && PriceBelowCloud && ChikouBelowCloud;
+        
     Comment(
-        "ADX value : " + DoubleToString(adxVal, 2) + "\n" +
-        "DI Plus : " + DoubleToString(adxPlus, 2) + "\n" +
-        "DI Minus : " + DoubleToString(adxMinus, 2) + "\n" +
-        "Tenkan > Kijun: " + (string)tenkenAboveKijun + "\n" +
-        "Tenkan < Kijun:" + (string)tenkenBelowKijun + "\n" +
-        "Sell (adxMinus > adxPlus && tenkenBelowKijun): " + (string)sellAdx + "\n" +
-        "Buy (adxMinus < adxPlus && tenkenAboveKijun): " + (string)buyAdx + "\n" +
         "\nServer Time : " + (string)TimeCurrent()
     );
 
     if (PositionsTotal() > 0 && ToogleTrailingStop == YES) {
         TrailingStop();
     }
-    
-    if (buyAdx) {
-        if (PositionSelect(_Symbol) && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL) {
-            trade.PositionClose(_Symbol);
-        }
-        if (!PositionSelect(_Symbol)) {
-            double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
-            double entry = Closex1;
-            double stoploss = ask - SL * _Point;
-            double takeprofit = ask + TP * _Point;
-            double calculatedLot = calclots(stoploss);
-            Print("BUY Order: Ask=", ask, ", StopLoss=", stoploss, ", TakeProfit=", takeprofit);
-            if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == FIXED) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, lotSize, ask, stoploss, takeprofit, "Buy :)");
-            } else if (closingMethod == OPPOSITE && sizingMethod == FIXED) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, lotSize, ask, 0, 0, "Buy :)");
-            } else if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == DYNAMIC) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, calculatedLot, ask, stoploss, takeprofit, "Buy :)");
-            } else if (closingMethod == OPPOSITE && sizingMethod == DYNAMIC) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, calculatedLot, ask, 0, 0, "Buy :)");
-            }
-        }
-    } else if (sellAdx) {
-        if (PositionSelect(_Symbol) && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) {
-            trade.PositionClose(_Symbol);
-        }
-        if (!PositionSelect(_Symbol)) {
-            double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
-            double entry = Closex1;
-            double stoploss = bid + SL * _Point;
-            double takeprofit = bid - TP * _Point;
-            double calculatedLot = calclots(stoploss);
-            Print("SELL Order: Bid=", bid, ", StopLoss=", stoploss, ", TakeProfit=", takeprofit);
-            if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == FIXED) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, lotSize, bid, stoploss, takeprofit, "Sell :)");
-            } else if (closingMethod == OPPOSITE && sizingMethod == FIXED) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, lotSize, bid, 0, 0, "Sell :)");
-            } else if (closingMethod == OPPOSITE && sizingMethod == DYNAMIC) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, calculatedLot, bid, 0, 0, "Sell :)");
-            } else if (closingMethod == STOPLOSSTAKEPROFIT && sizingMethod == DYNAMIC) {
-               trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, calculatedLot, bid, stoploss, takeprofit, "Sell :)");
-            }
-         }
+
+    if (BuyCond) {
+        HandlePosition(true);
+    } else if (SellCond) {
+        HandlePosition(false);
     }
     
     if (ToogleBreakeven == YES) {
