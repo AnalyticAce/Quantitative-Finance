@@ -17,7 +17,12 @@ input ulong Magic = 8888; // EA Magic Number
 input group "==== Indicators Settings ===="
 input group "=== ADX Indicator ==="
 input int adxPeriod = 100; // ADX Period
-
+/*
+input group "=== RSI Indicator ==="
+input int rsiPeriod = 14; // RSI Period
+input int overBought = 70; // OverBought Level
+input int overSold = 30; // OverSold Level
+*/
 input group "=== Ichimoku Indicator ==="
 input int tenkansen = 9; // Tenken-sen Value
 input int kijunsen = 26; // Kijun-sen Value
@@ -50,8 +55,8 @@ input double SL = 50; // Set a Stop Loss
 input double TP = 150; // Set a Take Profit
 
 enum TOOGLEIT {
-   YES, // Active
-   NO  // Inactive
+   YES, // Enable
+   NO  // Disable
 };
 
 input group "== BreakEven =="
@@ -83,8 +88,8 @@ int OnInit() {
     if (ToogleTrailingStop == YES && ToogleBreakeven == YES) {
       Alert("Please you can't Toogle TrailingStop and Breakeven Mechanism At the same time");
       return INIT_PARAMETERS_INCORRECT;
-    
     }
+    
     ichimoku.Create(_Symbol, timeframe, tenkansen, kijunsen, senkouspan);
     trade.SetExpertMagicNumber(Magic);
 
@@ -313,11 +318,11 @@ void OnTick() {
     bool sellAdx = false;
     bool buyAdx = false;
     double adxDiPlus[], adxDiMinus[], adxArr[], maArr[];
-    
+   
     if (CopyBuffer(adxHandle, 0, 0, 1, adxArr) <= 0 || 
         CopyBuffer(adxHandle, 1, 0, 1, adxDiPlus) <= 0 ||
         CopyBuffer(adxHandle, 2, 0, 1, adxDiMinus) <= 0) {
-        Print("Error copying ADX indicator buffer");
+        Print("Error copying indicators buffer");
         return;
     }
     
@@ -330,13 +335,27 @@ void OnTick() {
     double adxPlus = NormalizeDouble(adxDiPlus[0], _Digits);
     double adxMinus = NormalizeDouble(adxDiMinus[0], _Digits);
     double maVal = NormalizeDouble(maArr[0], _Digits);
-    
+
     double AskPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
     double BidPrice = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
 
-    if (/*maVal < Closex1 &&*/ adxMinus < adxPlus && tenkenAboveKijun && /*FutureCloudGreen && PriceAboveCloud &&*/ ChikouAboveCloud) {
+    if (
+        maVal < Closex1 
+        && adxMinus < adxPlus
+        && tenkenAboveKijun 
+        //&& FutureCloudGreen 
+        && PriceAboveCloud 
+        && ChikouAboveCloud
+        ) {
         buyAdx = true;
-    } else if (/*maVal > Closex1 &&*/ adxMinus > adxPlus && tenkenBelowKijun && /*FutureCloudRed && PriceBelowCloud &&*/ ChikouBelowCloud) {
+    } else if (
+        maVal > Closex1 
+        && adxMinus > adxPlus
+        && tenkenBelowKijun
+        //&& FutureCloudRed 
+        && PriceBelowCloud
+        && ChikouBelowCloud
+        ) {
         sellAdx = true;
     }
 
@@ -374,7 +393,7 @@ void OnTick() {
                trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, calculatedLot, ask, stoploss, takeprofit, "Buy :)");
             } else if (closingMethod == OPPOSITE && sizingMethod == DYNAMIC) {
                trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, calculatedLot, ask, 0, 0, "Buy :)");
-            } 
+            }
         }
     } else if (sellAdx) {
         if (PositionSelect(_Symbol) && PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY) {
