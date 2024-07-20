@@ -2,6 +2,8 @@
 
 input long MagicNumber = 1234; // Magic number
 input double Lots = 0.05; // Lot size
+input int StopLoss = 150; // Stop Loss in % of range
+input int TakeProfit = 200; // Take Profit in % of range
 input int RangeStart = 600; // Range start time
 input int RangeDuration = 120; // Range duration
 input int RangeClose = 1200; // Range close time
@@ -91,12 +93,12 @@ void OnTick()
         }
     }
 
-    if ((RangeClose >= 0 && last_tick.time >= range.close_time)
-          || (range.f_high_break && range.f_low_break)
-          || range.end_time == 0
-          || (range.end_time != 0 && last_tick.time > range.end_time && !range.f_entry)
-          || (CountOpenPositions() == 0)) {
-          CalculateRange();
+ if((RangeClose >= 0 && last_tick.time >= range.close_time)
+        || (range.f_high_break && range.f_low_break)
+        || range.end_time == 0
+        || (range.end_time != 0 && last_tick.time > range.end_time && !range.f_entry)
+        && CountOpenPositions() == 0) {
+        CalculateRange();
     }
 
     
@@ -231,15 +233,23 @@ void CheckBreakout()
         if(!range.f_high_break && last_tick.ask > range.high) {
             range.f_high_break = true;
             Print("High Breakout");
+            // calculate sl and tp
+            double sl = NormalizeDouble(last_tick.bid - ((range.high - range.low) * StopLoss * 0.01), _Digits);
+            double tp = NormalizeDouble(last_tick.bid + ((range.high - range.low) * TakeProfit * 0.01), _Digits);
+           
             // Buy
-            trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, Lots, last_tick.ask, 0, 0, "High Breakout");
+            trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, Lots, last_tick.ask, sl, tp, "High Breakout");
         }
 
         if (!range.f_low_break && last_tick.bid < range.low) {
             range.f_low_break = true;
             Print("Low Breakout");
+            // calculate sl and tp
+            double sl = NormalizeDouble(last_tick.ask + ((range.high - range.low) * StopLoss * 0.01), _Digits);
+            double tp = NormalizeDouble(last_tick.ask - ((range.high - range.low) * TakeProfit * 0.01), _Digits);
+           
             // Sell
-            trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, Lots, last_tick.bid, 0, 0, "Low Breakout");
+            trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, Lots, last_tick.bid, sl, tp, "Low Breakout");
         }
     }
 }
