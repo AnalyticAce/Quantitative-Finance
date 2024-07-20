@@ -1,7 +1,7 @@
 #include <Trade\Trade.mqh>
 
 input long MagicNumber = 1234; // Magic number
-input double Lots = 0.02; // Lot size
+input double Lots = 0.05; // Lot size
 input int RangeStart = 600; // Range start time
 input int RangeDuration = 120; // Range duration
 input int RangeClose = 1200; // Range close time
@@ -91,13 +91,14 @@ void OnTick()
         }
     }
 
-    if((RangeClose >= 0 && last_tick.time >= range.close_time)
-        || (range.f_high_break && range.f_low_break)
-        || (range.end_time == 0)
-        || (range.end_time != 0 && last_tick.time > range.end_time && !range.f_entry)
-        && CountOpenPositions() == 0) {
-        CalculateRange();
+    if ((RangeClose >= 0 && last_tick.time >= range.close_time)
+          || (range.f_high_break && range.f_low_break)
+          || range.end_time == 0
+          || (range.end_time != 0 && last_tick.time > range.end_time && !range.f_entry)
+          || (CountOpenPositions() == 0)) {
+          CalculateRange();
     }
+
     
     // Check for breakouts
     CheckBreakout();
