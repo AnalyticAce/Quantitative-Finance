@@ -7,6 +7,7 @@ input ulong Magic = 8888;
 
 input int maPeriod = 50;
 input ENUM_MA_METHOD maMethod = MODE_SMA;
+input double lot = 0.02;
 
 int maHandle;
 double maBuffer[];
@@ -53,11 +54,11 @@ void OnTick() {
 
     if (isBuySignal && !PositionSelect(_Symbol)) {
         double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
-        trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, 0.2, ask, 0, 0, "Buy");
+        trade.PositionOpen(_Symbol, ORDER_TYPE_BUY, lot, ask, 0, 0, "Buy");
     }
 
     if (isSellSignal && !PositionSelect(_Symbol)) {
         double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
-        trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, 0.2, bid, 0, 0, "Sell");
+        trade.PositionOpen(_Symbol, ORDER_TYPE_SELL, lot, bid, 0, 0, "Sell");
     }
 }
